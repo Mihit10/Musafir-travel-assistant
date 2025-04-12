@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -21,16 +22,15 @@ const tajMahalData = {
   localFood: [
     {
       name: "Petha",
-      image: "/images/petha.jpg",
+      image: "/api/placeholder/200/200", // Using placeholder instead of /images/petha.jpg
       description: "A translucent sweet made from ash gourd, native to Agra."
     },
     {
       name: "Gajak",
-      image: "/images/gajak.jpg",
+      image: "/api/placeholder/200/200", // Using placeholder instead of /images/gajak.jpg
       description: "Crispy sesame sweet, popular during winters."
     }
   ],
-  
   history: "Built between 1632 and 1653 by Emperor Shah Jahan in memory of his beloved wife Mumtaz Mahal, the Taj Mahal is considered the greatest architectural achievement in the whole range of Indo-Islamic architecture. The marble mausoleum stands on a raised platform with four identical facades, each with a massive arch in the center. Its central dome reaches a height of 240 feet.",
   placeInfo: {
     entryFee: "₹1,100 for foreigners, ₹50 for Indians",
@@ -45,18 +45,73 @@ const tajMahalData = {
   }
 };
 
-// Animation variants
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.5 } }
+// Custom animation variants for directional gradient transitions
+const leftToRightGradient = {
+    hidden: { 
+      backgroundPosition: "0% 0%",
+      backgroundSize: "200% 100%", 
+      opacity: 0.7
+    },
+    visible: { 
+      backgroundPosition: "100% 0%",
+      backgroundSize: "100% 100%",
+      opacity: 1,
+      transition: { duration: 0.8 }
+    }
+  };
+
+const rightToLeftGradient = {
+  hidden: { 
+    backgroundPosition: "100% 0%", 
+    backgroundSize: "200% 100%", 
+    opacity: 0.7 
+  },
+  visible: { 
+    backgroundPosition: "0% 0%",
+    backgroundSize: "100% 100%",
+    opacity: 1,
+    transition: { duration: 0.8 }
+  }
 };
 
-const scaleUp = {
-  hidden: { scale: 0.95, opacity: 0 },
-  visible: { scale: 1, opacity: 1, transition: { duration: 0.5 } }
+const topToBottomGradient = {
+  hidden: { 
+    backgroundPosition: "0% 0%", 
+    backgroundSize: "100% 200%", 
+    opacity: 0.7 
+  },
+  visible: { 
+    backgroundPosition: "0% 100%",
+    backgroundSize: "100% 100%",
+    opacity: 1,
+    transition: { duration: 0.8 }
+  }
 };
 
-export default function TajMahalBenitoGrid() {
+const bottomToTopGradient = {
+  hidden: { 
+    backgroundPosition: "0% 100%", 
+    backgroundSize: "100% 200%", 
+    opacity: 0.7 
+  },
+  visible: { 
+    backgroundPosition: "0% 0%",
+    backgroundSize: "100% 100%",
+    opacity: 1,
+    transition: { duration: 0.8 }
+  }
+};
+
+const fadeInScale = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    transition: { duration: 0.7 }
+  }
+};
+
+export default function BenitoGrid() {
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
@@ -69,7 +124,7 @@ export default function TajMahalBenitoGrid() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-6 bg-gray-50">
+    <div className="max-w-7xl mx-auto p-4 md:p-6 bg-white">
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">{tajMahalData.title}</h1>
       
       {/* Benito Grid Layout */}
@@ -77,11 +132,24 @@ export default function TajMahalBenitoGrid() {
         
         {/* Top Row Cards */}
         <motion.div 
-          className="md:col-span-2 lg:col-span-7 bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl p-4 overflow-hidden"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-        >
+            className="md:col-span-2 lg:col-span-7 rounded-xl p-4 overflow-hidden"
+            style={{
+              background: "linear-gradient(to right, #fff1e6, #fde4cf)",
+              backgroundSize: "200% 100%",
+              backgroundPosition: "0% 0%",
+            }}
+            initial={{ 
+              backgroundPosition: "0% 0%",
+              backgroundSize: "200% 100%", 
+              opacity: 0.7 
+            }}
+            animate={{ 
+              backgroundPosition: "100% 0%",
+              backgroundSize: "100% 100%",
+              opacity: 1,
+              transition: { duration: 0.8, delay: 0.1 }
+            }}
+          >
           <h2 className="text-xl font-semibold mb-3">Things To Do Around</h2>
           <div className="flex items-start">
             <img src="/api/placeholder/300/200" alt="Things to do" className="rounded-lg w-1/3 mr-4" />
@@ -112,11 +180,16 @@ export default function TajMahalBenitoGrid() {
         </motion.div>
         
         <motion.div 
-          className="md:col-span-1 lg:col-span-5 bg-gradient-to-br from-amber-100 to-yellow-50 rounded-xl p-4"
-          variants={fadeIn}
+          className="md:col-span-1 lg:col-span-5 rounded-xl p-4"
+          style={{
+            background: "linear-gradient(to left, #feeedc, #fff0be)",
+            backgroundSize: "200% 100%",
+            backgroundPosition: "100% 0%"
+          }}
+          variants={rightToLeftGradient}
           initial="hidden"
           animate="visible"
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.2 }}
         >
           <h2 className="text-xl font-semibold mb-3">Pro Tip</h2>
           <div className="flex flex-col h-full justify-between">
@@ -130,11 +203,11 @@ export default function TajMahalBenitoGrid() {
         {/* Main Center Image - Now taller */}
         <motion.div 
           className="md:col-span-6 lg:col-span-8 row-span-3 relative overflow-hidden rounded-xl h-120 md:h-auto"
-          variants={scaleUp}
+          variants={fadeInScale}
           initial="hidden"
           animate="visible"
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.01 }}
+          transition={{ delay: 0.3 }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10"></div>
           <img 
@@ -153,61 +226,48 @@ export default function TajMahalBenitoGrid() {
           </div>
         </motion.div>
         
-        {/* Side Cards */}
-        {/* <motion.div 
-          className="md:col-span-1 lg:col-span-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-4"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.2 }}
-        > */}
-          {/* <h2 className="text-xl font-semibold mb-3">Must Visit Nearby</h2>
-          <div className="grid grid-cols-2 gap-2">
-            {tajMahalData.nearbyAttractions.slice(0, 2).map((attraction, index) => (
-              <div key={index} className="text-center">
-                <img 
-                  src={attraction.image} 
-                  alt={attraction.name} 
-                  className="rounded-lg w-full h-24 object-cover mb-1"
-                />
-                <p className="text-sm font-medium">{attraction.name}</p>
-              </div>
-            ))}
-          </div> */}
-        {/* </motion.div> */}
-        
+        {/* Must Eat Sweets Card */}
         <motion.div 
-  className="md:col-span-2 lg:col-span-4 col-start-9 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl p-4"
-  variants={fadeIn}
-  initial="hidden"
-  animate="visible"
-  transition={{ delay: 0.3 }}
->
-  <h2 className="text-xl font-semibold mb-3 text-center">Must Eat Sweets</h2>
-
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {tajMahalData.localFood.map((food: { name: string; image: string; description: string }, index: number) => (
-      <div key={index} className="flex flex-col items-center">
-        <img 
-          src={food.image} 
-          alt={food.name} 
-          className="rounded-lg w-full h-32 object-cover mb-2"
-        />
-        <h3 className="font-medium text-center">{food.name}</h3>
-        <p className="text-sm text-gray-600 text-center">{food.description}</p>
-      </div>
-    ))}
-  </div>
-</motion.div>
-
-        
-        {/* Bottom Row Cards */}
-        <motion.div 
-          className="md:col-span-2 lg:col-span-8 bg-gradient-to-br from-purple-50 to-indigo-100 rounded-xl p-4"
-          variants={fadeIn}
+          className="md:col-span-2 lg:col-span-4 col-start-9 rounded-xl p-4"
+          style={{
+            background: "linear-gradient(to bottom, #e6f7ec, #d1f1dd)",
+            backgroundSize: "100% 200%",
+            backgroundPosition: "0% 0%"
+          }}
+          variants={topToBottomGradient}
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.4 }}
+        >
+          <h2 className="text-xl font-semibold mb-3 text-center">Must Eat Sweets</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {tajMahalData.localFood.map((food, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <img 
+                  src={food.image} 
+                  alt={food.name} 
+                  className="rounded-lg w-full h-32 object-cover mb-2"
+                />
+                <h3 className="font-medium text-center">{food.name}</h3>
+                <p className="text-sm text-gray-600 text-center">{food.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+        
+        {/* Bottom Row Cards */}
+        <motion.div 
+          className="md:col-span-2 lg:col-span-8 rounded-xl p-4"
+          style={{
+            background: "linear-gradient(to top, #ede9fe, #ddd6fe)",
+            backgroundSize: "100% 200%",
+            backgroundPosition: "0% 100%"
+          }}
+          variants={bottomToTopGradient}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.5 }}
         >
           <h2 className="text-xl font-semibold mb-3">History & Legacy</h2>
           <div className="flex flex-col md:flex-row items-center">
@@ -235,11 +295,16 @@ export default function TajMahalBenitoGrid() {
         </motion.div>
         
         <motion.div 
-          className="md:col-span-1 lg:col-span-4 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl p-4"
-          variants={fadeIn}
+          className="md:col-span-1 lg:col-span-4 rounded-xl p-4"
+          style={{
+            background: "linear-gradient(to right, #f3f4f6, #e5e7eb)",
+            backgroundSize: "200% 100%",
+            backgroundPosition: "0% 0%"
+          }}
+          variants={leftToRightGradient}
           initial="hidden"
           animate="visible"
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
         >
           <h2 className="text-xl font-semibold mb-3">About This Place</h2>
           <ul className="space-y-2">
@@ -268,7 +333,7 @@ export default function TajMahalBenitoGrid() {
         className="fixed top-6 right-6 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
       >
         <h3 className="text-lg font-medium mb-2">Real-Time Info</h3>
         <div className="space-y-2">
