@@ -28,36 +28,37 @@ interface ChatbotProps {
 // 🔹 City Themes
 const colors: Record<CityName, ColorScheme> = {
   Goa: {
-    primary: "#E0F7FA",
-    secondary: "#00796B",
-    tertiary: "#FF8F00",
+    primary: "#DFF6F5",   // Soft aqua – ocean breeze
+    secondary: "#26A69A", // Teal – coconut trees & water sports
+    tertiary: "#FF7043",  // Warm orange – sunset party energy
   },
   Kerala: {
-    primary: "#E8F5E9",
-    secondary: "#33691E",
-    tertiary: "#01579B",
+    primary: "#E7F4EC",   // Backwater mist green
+    secondary: "#4CAF50", // Kerala green – forests & farms
+    tertiary: "#1976D2",  // Backwater blue – clean and cool
   },
   Himachal: {
-    primary: "#E3F2FD",
-    secondary: "#5D4037",
-    tertiary: "#1A237E",
+    primary: "#E3F2FD",   // Clear mountain sky
+    secondary: "#6D4C41", // Forest brown – wood & hills
+    tertiary: "#3F51B5",  // Crisp blue – cool elevation
   },
   Uttarakhand: {
-    primary: "#F3E5F5",
-    secondary: "#33691E",
-    tertiary: "#01579B",
+    primary: "#F3E5F5",   // Lavender – peaceful/spiritual
+    secondary: "#4CAF50", // Forest green – Himalayan range
+    tertiary: "#1E88E5",  // Glacier river blue
   },
   Rajasthan: {
-    primary: "#FFF8E1",
-    secondary: "#BF360C",
-    tertiary: "#880E4F",
+    primary: "#FFF3E0",   // Desert sand cream
+    secondary: "#D84315", // Fort terracotta
+    tertiary: "#C2185B",  // Bold pink – traditional textiles
   },
   default: {
-    primary: "#FFF0D1",
-    secondary: "#664343",
-    tertiary: "#4A6FA5",
+    primary: "#FFF0D1",   // Neutral warm base
+    secondary: "#664343", // Earthy accent
+    tertiary: "#4A6FA5",  // Calming blue
   },
 };
+
 
 const Chatbot: React.FC<ChatbotProps> = ({ ContextJson, city = "default" }) => {
   const theme = colors[city] || colors.default;
@@ -104,6 +105,7 @@ ${JSON.stringify(ContextJson, null, 2)}
 
 Try to keep your respnse short and simple
 You do not need to include the JSON in your response. include only the relevant information.
+If the user asks for something that is too irrelevant or out of context, politely decline and suggest they ask something else.
 Use Markdown formatting:
 - **bold** for emphasis
 - \`code\` for commands
@@ -135,8 +137,8 @@ Use Markdown formatting:
   };
 
   return (
-    <div className="w-full p-6 shadow-md" style={{ backgroundColor: theme.primary }}>
-      <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md bg-white">
+    <div className="w-full p-6 shadow-md">
+      {/* <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md bg-white"> */}
         <h2 className="text-2xl font-semibold mb-2" style={{ color: theme.secondary }}>
           Travel Assistant Chatbot
         </h2>
@@ -190,7 +192,7 @@ Use Markdown formatting:
             <FaPaperPlane />
           </button>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

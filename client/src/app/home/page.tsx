@@ -243,13 +243,17 @@ const Page = () => {
       
       <main className="container mx-auto px-4 py-8">
         {/* Top section: Itinerary and Map */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1.5rem' }}>
           <div>
             <Itinerary selectedDay={selectedDay} />
           </div>
-          <div>
-            <MapPlaceholder selectedDay={selectedDay} />
-          </div>
+          <div style={{ height: '100vh', width: '100%' }}>
+      <iframe
+        src="/mapbox" // Path to the Mapbox page
+        title="Mapbox Map"
+        style={{ width: '100%', height: '100%', border: 'none' }}
+      />
+    </div>
         </div>
         
         {/* Bottom section: Local Vendors and Chatbot */}
