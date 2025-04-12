@@ -45,34 +45,36 @@
 
 /* City-specific theme variables */
 .theme-goa {
-  --color-primary: #E0F7FA; /* Light blue - representing beach/ocean */
-  --color-secondary: #00796B; /* Teal green - representing tropical vegetation */
-  --color-tertiary: #FF8F00; /* Orange - representing sunset/vibrant culture */
+  --color-primary: #DFF6F5;   /* Soft aqua – ocean breeze */
+  --color-secondary: #26A69A; /* Teal – coconut trees & water sports */
+  --color-tertiary: #FF7043;  /* Warm orange – sunset party energy */
 }
 
 .theme-kerala {
-  --color-primary: #E8F5E9; /* Light green - representing backwaters/lush vegetation */
-  --color-secondary: #33691E; /* Dark green - representing tea plantations */
-  --color-tertiary: #01579B; /* Deep blue - representing coastal waters */
+  --color-primary: #E7F4EC;   /* Backwater mist green */
+  --color-secondary: #4CAF50; /* Kerala green – forests & farms */
+  --color-tertiary: #1976D2;  /* Backwater blue – clean and cool */
 }
 
 .theme-himachal {
-  --color-primary: #E3F2FD; /* Light sky blue - representing clear mountain skies */
-  --color-secondary: #5D4037; /* Brown - representing wooden architecture/forest */
-  --color-tertiary: #1A237E; /* Deep blue - representing mountain depths */
+  --color-primary: #E3F2FD;   /* Clear mountain sky */
+  --color-secondary: #6D4C41; /* Forest brown – wood & hills */
+  --color-tertiary: #3F51B5;  /* Crisp blue – cool elevation */
 }
 
 .theme-uttarakhand {
-  --color-primary: #F3E5F5; /* Light purple - representing spiritual essence */
-  --color-secondary: #33691E; /* Forest green - representing dense forests */
-  --color-tertiary: #01579B; /* Deep blue - representing rivers and lakes */
+  --color-primary: #F3E5F5;   /* Lavender – peaceful/spiritual */
+  --color-secondary: #4CAF50; /* Forest green – Himalayan range */
+  --color-tertiary: #1E88E5;  /* Glacier river blue */
 }
 
 .theme-rajasthan {
-  --color-primary: #FFF8E1; /* Desert sand - representing deserts */
-  --color-secondary: #BF360C; /* Terracotta - representing forts/palaces */
-  --color-tertiary: #880E4F; /* Deep pink - representing traditional textiles */
+  --color-primary: #FFF3E0;   /* Desert sand cream */
+  --color-secondary: #D84315; /* Fort terracotta */
+  --color-tertiary: #C2185B;  /* Bold pink – traditional textiles */
 }
+
+
 
 :root {
   --color-background: var(--background);
@@ -85,17 +87,17 @@
   :root {
 
     /* Optional: adjust the travel theme colors for dark mode */
-    --color-primary: #664343;
-    --color-secondary: #FFF0D1;
+    --color-primary: #FFF0D1;
+    --color-secondary: #664343;
     --color-tertiary: #4A6FA5;
   }
 
   /* Adjust city themes for dark mode if needed */
-  .theme-goa {
+  /* .theme-goa {
     --color-primary: #01579B;
     --color-secondary: #E0F7FA;
     --color-tertiary: #FF8F00;
-  }
+  } */
 
   /* Add dark mode overrides for other city themes if needed */
 }
