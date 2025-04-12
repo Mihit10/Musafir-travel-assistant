@@ -3,29 +3,53 @@ import { useRef, useState, useEffect } from 'react';
 
 const IndiaMandala = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); // Set to true initially to show on load
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
   
   // Custom hook for scroll detection
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
+      
+      // Determine scroll direction
+      if (currentScrollPos > lastScrollTop) {
+        setScrollDirection('down');
+      } else if (currentScrollPos < lastScrollTop) {
+        setScrollDirection('up');
+      }
+      
+      setLastScrollTop(currentScrollPos);
       setScrollPosition(currentScrollPos);
       
       // Check if section is visible
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
-        const isInView = rect.top <= window.innerHeight && rect.bottom >= 0;
-        setIsVisible(isInView);
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate visibility threshold - fade out when scrolling past 20% of the section
+        const visibilityThreshold = viewportHeight * 0.2;
+        
+        // Gradually change opacity based on scroll position
+        if (rect.top <= viewportHeight && rect.bottom >= 0) {
+          if (rect.top <= -visibilityThreshold) {
+            // Scrolling down - start fading out
+            setIsVisible(false);
+          } else {
+            // Scrolling up or section is in view - fade in
+            setIsVisible(true);
+          }
+        }
       }
     };
 
-    // After 2 seconds, show the input field
+    // After 1 second, show the input field
     const timer = setTimeout(() => {
       setShowInput(true);
-    }, 2000);
+    }, 1000);
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Check visibility on mount
@@ -34,7 +58,7 @@ const IndiaMandala = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timer);
     };
-  }, []);
+  }, [lastScrollTop]);
 
   // Calculate movement based on scroll position
   const calculateMovement = (baseDistance: number, direction: number) => {
@@ -42,53 +66,27 @@ const IndiaMandala = () => {
     return moveAmount * direction;
   };
   
-
   return (
     <div 
       ref={sectionRef}
       className="mandala-section w-full h-full absolute"
     >
       <div className="mandala-container w-full h-full">
-        <div className={`mandala-wrapper ${isVisible ? 'visible' : ''}`}>
+        <div className={`mandala-wrapper ${isVisible ? 'visible' : 'hidden'}`}>
           {/* Mandala Background Circle */}
           <div className="flex items-center justify-center w-full h-full overflow-hidden">
-  <img 
-    src="/mand.png" 
-    alt="Mandala Design" 
-    className="scale-[1.5] object-cover"
-  />
-</div>
-
-
-          
-          {/* Gateway of India at bottom */}
-          <div 
-            className={`mandala-gateway ${isVisible ? 'visible' : ''}`}
-            style={{
-              transform: `translateY(${calculateMovement(50, 1)}px)`
-            }}
-          >
             <img 
-              src="/lovable-uploads/900572fb-898e-4ec0-99ec-6128b0f38c09.png" 
-              alt="Gateway of India" 
-              className="gateway-img"
+              src="/mand.png" 
+              alt="Mandala Design" 
+              className="scale-[1.8] object-cover"
             />
           </div>
-          
-          {/* India Title */}
-          <div 
-            className={`mandala-title ${isVisible ? 'visible' : ''} ${showInput ? 'move-up' : ''}`}
-          >
-            <img 
-              src="/lovable-uploads/543318f1-fed1-41c2-bfc9-5ecd884f58c3.png" 
-              alt="India" 
-              className="india-title-img"
-            />
-          </div>
+
+  
           
           {/* Input Box */}
           <div 
-            className={`mandala-input ${isVisible ? 'visible' : ''} ${showInput ? 'show' : ''}`}
+            className={`mandala-input ${isVisible ? 'visible' : 'hidden'} ${showInput ? 'show' : ''}`}
           >
             <div className="input-container">
               <input
@@ -109,85 +107,85 @@ const IndiaMandala = () => {
             </div>
           </div>
 
-          {/* Seven components around the mandala circle */}
-          {/* Component 1 - Top */}
+          {/* Peacock 1 - Top Left */}
           <div 
-            className={`mandala-component component-top ${isVisible ? 'visible' : ''}`}
+            className={`mandala-component peacock-left ${isVisible ? 'visible' : 'hidden'}`}
             style={{
-              transform: `translateY(${calculateMovement(100, -1)}px)`
-            }}
-          >
-             <div className="component-image-container">
-    <img 
-      src="/p2.gif" 
-      alt="Mandala Design"
-      className="component-image"
-    />
-  </div>
-</div>
-          
-          {/* Component 2 - Top Right */}
-          <div 
-            className={`mandala-component component-top-right ${isVisible ? 'visible' : ''}`}
-            style={{
-              transform: `translate(${calculateMovement(70, 1)}px, ${calculateMovement(70, -1)}px)`
-            }}
-          >
-           <div className="component-image-container">
-    <img 
-      src="/p1.gif" 
-      alt="Mandala Design"
-      className="component-image"
-    />
-  </div>
-</div>
-          
-          {/* Component 3 - Right */}
-          <div 
-            className={`mandala-component component-right ${isVisible ? 'visible' : ''}`}
-            style={{
-              transform: `translateX(${calculateMovement(100, 1)}px)`
+                transform: `translate(-30px, -80px) translate(${calculateMovement(100, -1)}px, ${calculateMovement(20, -1)}px)`
             }}
           >
             <div className="component-image-container">
-    <img 
-      src="/e1.gif" 
-      alt="Mandala Design"
-      className="component-image"
-    />
-  </div>
-</div>
+              <img 
+                src="/p2.gif" 
+                alt="Peacock" 
+                className="component-image"
+              />
+            </div>
+          </div>
           
-          {/* Component 4 - Bottom Right */}
+          {/* Peacock 2 - Top Right */}
           <div 
-            className={`mandala-component component-bottom-right ${isVisible ? 'visible' : ''}`}
+            className={`mandala-component peacock-right ${isVisible ? 'visible' : 'hidden'}`}
             style={{
-              transform: `translate(${calculateMovement(70, 1)}px, ${calculateMovement(70, 1)}px)`
+               transform: `translate(-82px, -80px) translate(${calculateMovement(100, -1)}px, ${calculateMovement(20, -1)}px)`
             }}
           >
             <div className="component-image-container">
-    <img 
-      src="/ele2.gif" 
-      alt="Mandala Design"
-      className="component-image"
-    />
-  </div>
-</div>
+              <img 
+                src="/p1.gif" 
+                alt="Peacock"
+                style={{ width: '150px', height: '150px' }}
+                className="component-image"
+              />
+            </div>
+          </div>
           
-          {/* Component 7 - Top Left */}
+          {/* Elephant 1 - Bottom Right */}
           <div 
-            className={`mandala-component component-top-left ${isVisible ? 'visible' : ''}`}
+            className={`mandala-component elephant-right ${isVisible ? 'visible' : 'hidden'}`}
             style={{
-              transform: `translate(${calculateMovement(70, -1)}px, ${calculateMovement(70, -1)}px)`
+              transform: `translate(${calculateMovement(60, 1)}px, ${calculateMovement(60, 1)}px)`
             }}
           >
             <div className="component-image-container">
-    <img 
-      src="/fort.png" 
-      alt="Mandala Design"
-      className="component-image"
-    />
-  </div>
+              <img 
+                src="/e1.gif" 
+                alt="Elephant" 
+                className="component-image elephant-image"
+              />
+            </div>
+          </div>
+          
+          {/* Elephant 2 - Bottom Left */}
+          <div 
+            className={`mandala-component elephant-left ${isVisible ? 'visible' : 'hidden'}`}
+            style={{
+              transform: `translate(${calculateMovement(60, -1)}px, ${calculateMovement(60, 1)}px)`
+            }}
+          >
+            <div className="component-image-container">
+              <img 
+                src="/ele2.gif" 
+                alt="Elephant" 
+                className="component-image elephant-image"
+              />
+            </div>
+          </div>
+          
+          {/* Fort - Bottom */}
+          <div 
+            className={`mandala-component component-bottom ${isVisible ? 'visible' : 'hidden'}`}
+            style={{
+              transform: `translateY(${calculateMovement(70, 1)}px)`
+            }}
+          >
+            <div className="component-image-container">
+              <img 
+                src="/fort.png" 
+                alt="Fort" 
+                className="component-image"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -203,7 +201,7 @@ const IndiaMandala = () => {
         }
         
         .mandala-container {
-          position: absolute;
+          position: fixed;
           inset: 0;
           display: flex;
           align-items: center;
@@ -213,16 +211,19 @@ const IndiaMandala = () => {
         
         .mandala-wrapper {
           position: relative;
-          width: 90vmin;
-          height: 90vmin;
-          opacity: 0;
-          transform: translateY(-50px);
-          transition: opacity 0.7s ease, transform 0.7s ease;
+          width: 95vmin;
+          height: 95vmin;
+          transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .mandala-wrapper.visible {
           opacity: 1;
           transform: translateY(0);
+        }
+        
+        .mandala-wrapper.hidden {
+          opacity: 0;
+          transform: translateY(-30px);
         }
         
         .mandala-circle {
@@ -233,15 +234,6 @@ const IndiaMandala = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          opacity: 0;
-          transform: scale(0.95);
-          transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .mandala-wrapper.visible .mandala-circle {
-          opacity: 1;
-          transform: scale(1);
-          transition-delay: 0s;
         }
         
         .mandala-img {
@@ -255,14 +247,16 @@ const IndiaMandala = () => {
           bottom: 5%;
           left: 50%;
           transform: translateX(-50%);
-          width: 50%;
-          opacity: 0;
-          transition: opacity 0.6s ease, transform 0.6s ease;
+          width: 60%;
+          transition: opacity 0.7s ease, transform 0.7s ease;
         }
         
         .mandala-gateway.visible {
           opacity: 1;
-          transition-delay: 0.6s;
+        }
+        
+        .mandala-gateway.hidden {
+          opacity: 0;
         }
         
         .gateway-img {
@@ -276,19 +270,21 @@ const IndiaMandala = () => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 60%;
-          max-width: 400px;
-          opacity: 0;
-          transition: opacity 0.6s ease, transform 0.6s ease;
+          width: 70%;
+          max-width: 500px;
+          transition: opacity 0.7s ease, transform 0.7s ease;
         }
         
         .mandala-title.visible {
           opacity: 1;
-          transition-delay: 0.8s;
+        }
+        
+        .mandala-title.hidden {
+          opacity: 0;
         }
         
         .mandala-title.move-up {
-          transform: translate(-50%, calc(-50% - 50px));
+          transform: translate(-50%, calc(-50% - 60px));
         }
         
         .india-title-img {
@@ -302,36 +298,40 @@ const IndiaMandala = () => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 80%;
-          max-width: 400px;
+          width: 85%;
+          max-width: 500px;
           opacity: 0;
           scale: 0.8;
-          transition: opacity 0.6s ease, transform 0.6s ease, scale 0.6s ease;
+          transition: opacity 0.7s ease, transform 0.7s ease, scale 0.7s ease;
         }
         
         .mandala-input.show {
           opacity: 1;
           scale: 1;
-          transition-delay: 2.2s;
+          transition-delay: 1.0s;
+        }
+        
+        .mandala-input.hidden {
+          opacity: 0;
         }
         
         .input-container {
           position: relative;
-          margin-top: 64px;
+          margin-top: 80px;
         }
         
         .prompt-input {
           width: 100%;
-          padding: 16px 16px 16px 24px;
-          padding-right: 48px;
+          padding: 18px 18px 18px 28px;
+          padding-right: 60px;
           border-radius: 9999px;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.15), 0 6px 8px -2px rgba(0, 0, 0, 0.08);
           background-color: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(4px);
-          border: 2px solid rgba(128, 0, 128, 0.2);
+          backdrop-filter: blur(5px);
+          border: 3px solid rgba(128, 0, 128, 0.2);
           outline: none;
           color: #4a5568;
-          font-size: 16px;
+          font-size: 18px;
           transition: border-color 0.3s ease;
         }
         
@@ -340,17 +340,17 @@ const IndiaMandala = () => {
         }
         
         .prompt-input:focus {
-          border-color: rgba(255, 140, 0, 0.5);
+          border-color: rgba(255, 140, 0, 0.6);
         }
         
         .submit-button {
           position: absolute;
-          right: 12px;
+          right: 14px;
           top: 50%;
           transform: translateY(-50%);
           background-color: #800080;
           color: white;
-          padding: 8px;
+          padding: 10px;
           border-radius: 9999px;
           border: none;
           cursor: pointer;
@@ -362,8 +362,8 @@ const IndiaMandala = () => {
         }
         
         .button-icon {
-          height: 20px;
-          width: 20px;
+          height: 24px;
+          width: 24px;
         }
         
         .scroll-spacer {
@@ -373,72 +373,73 @@ const IndiaMandala = () => {
         /* Component styles */
         .mandala-component {
           position: absolute;
-          opacity: 0;
-          transition: opacity 0.6s ease, transform 0.6s ease;
+          transition: opacity 0.7s ease, transform 0.7s ease;
         }
         
         .mandala-component.visible {
           opacity: 1;
         }
         
-        .component-circle {
-          width: 60px;
-          height: 60px;
-          background-color: rgba(255, 140, 0, 0.8);
-          border-radius: 50%;
+        .mandala-component.hidden {
+          opacity: 0;
+        }
+        
+        .component-image-container {
+          width: 160px;
+          height: 160px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-weight: bold;
-          font-size: 24px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
-        /* Position the components around the circle */
-        .component-top {
-          top: 0;
+        .component-image {
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+        }
+        
+        .elephant-image {
+          transform: scale(1.8);
+        }
+        
+        /* Position the components around the circle to match description */
+        .peacock-left {
+          top: 10%;
+          left: 40%;
+          transform: translateX(-50%);
+        }
+        
+        .peacock-right {
+          top: 10%;
+          left: 60%;
+          transform: translateX(-50%);
+        }
+        
+        .elephant-left {
+          bottom: 15%;
+          left: 15%;
+        }
+        
+        .elephant-right {
+          bottom: 15%;
+          right: 15%;
+        }
+        
+        .component-bottom {
+          bottom: 0;
           left: 50%;
           transform: translateX(-50%);
-          transition-delay: 0.3s;
         }
         
-        .component-top-right {
-          top: 15%;
-          right: 15%;
-          transition-delay: 0.4s;
-        }
-        
-        .component-right {
-          top: 50%;
-          right: 0;
-          transform: translateY(-50%);
-          transition-delay: 0.5s;
-        }
-        
-        .component-bottom-right {
-          bottom: 15%;
-          right: 15%;
-          transition-delay: 0.6s;
-        }
-        
-        .component-bottom-left {
-          bottom: 15%;
-          left: 15%;
-          transition-delay: 0.7s;
-        }
-        
-        .component-left {
-          top: 50%;
-          left: 0;
-          transform: translateY(-50%);
-          transition-delay: 0.8s;
-        }
-        
-        .component-top-left {
-          top: 15%;
-          left: 15%;
-          transition-delay: 0.9s;
+        /* For smooth transitions based on scroll direction */
+        @media (prefers-reduced-motion: no-preference) {
+          .mandala-wrapper,
+          .mandala-component,
+          .mandala-gateway,
+          .mandala-title,
+          .mandala-input {
+            transition-duration: 0.8s;
+          }
         }
       `}</style>
     </div>
