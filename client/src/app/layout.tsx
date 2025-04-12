@@ -24,9 +24,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <head>
+        {/* Google Translate setup script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                  pageLanguage: 'en',
+                  includedLanguages: 'en,hi,fr,es,de', // Add your desired languages
+                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+              }
+            `,
+          }}
+        />
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div
+          id="google_translate_element"
+          style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 9999 }}
+        ></div>
+
         {children}
       </body>
     </html>
