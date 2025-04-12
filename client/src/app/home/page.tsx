@@ -5,7 +5,7 @@ import Header from '../home/header';
 import Itinerary from '../home/itinerary';
 import MapPlaceholder from '../home/map';
 import LocalVendors from '../home/local';
-import ChatbotPlaceholder from '../home/chatbot';
+import Chatbot from '../home/chatbot';
 import FlightOptions from '../home/flights';
 import StayOptions from '../home/stay';
 
@@ -63,6 +63,108 @@ const Page = () => {
   const flightOptionsRef = useRef<HTMLDivElement>(null);
   const stayOptionsRef = useRef<HTMLDivElement>(null);
   
+  const travel_itinerary = {
+    "itinerary": {
+      "day_1": [
+        {
+          "city": "Goa",
+          "place_name": "Mapusa Municipal Market",
+          "category": "Shopping",
+          "description": "A traditional market in Mapusa, known for its vibrant Friday market where locals sell spices, fruits, jewelry, and more.",
+          "timings": "Monday to Saturday: 8:00 AM - 6:00 PM; Closed on Sundays",
+          "entry_fee": "Free",
+          "location": {
+            "lat": 15.591,
+            "lng": 73.82
+          },
+          "best_time_to_visit": "November to March",
+          "user_ratings": 4.2,
+          "tags": ["Shopping", "Cultural"]
+        },
+        {
+          "city": "Goa",
+          "place_name": "Baga Beach",
+          "category": "Beach",
+          "description": "A popular beach known for its nightlife, water sports, and vibrant atmosphere.",
+          "timings": "Open 24 hours",
+          "entry_fee": "Free",
+          "location": {
+            "lat": 15.552,
+            "lng": 73.751
+          },
+          "best_time_to_visit": "November to February",
+          "user_ratings": 4.5,
+          "tags": ["Beach", "Nightlife"]
+        }
+      ],
+      "day_2": [
+        {
+          "city": "Goa",
+          "place_name": "Fort Aguada",
+          "category": "Historical",
+          "description": "A well-preserved 17th-century Portuguese fort offering stunning views of the Arabian Sea.",
+          "timings": "9:30 AM - 6:00 PM",
+          "entry_fee": "Free",
+          "location": {
+            "lat": 15.540,
+            "lng": 73.752
+          },
+          "best_time_to_visit": "November to March",
+          "user_ratings": 4.3,
+          "tags": ["Historical", "Scenic"]
+        },
+        {
+          "city": "Goa",
+          "place_name": "Dudhsagar Waterfalls",
+          "category": "Nature",
+          "description": "One of the tallest waterfalls in India, located in the Bhagwan Mahavir Wildlife Sanctuary.",
+          "timings": "8:00 AM - 6:00 PM",
+          "entry_fee": "Varies based on the tour",
+          "location": {
+            "lat": 15.283,
+            "lng": 74.194
+          },
+          "best_time_to_visit": "June to January",
+          "user_ratings": 4.7,
+          "tags": ["Nature", "Adventure"]
+        }
+      ],
+      "day_3": [
+        {
+          "city": "Goa",
+          "place_name": "Anjuna Flea Market",
+          "category": "Shopping",
+          "description": "A vibrant market held every Wednesday, offering a variety of goods from clothes to handicrafts.",
+          "timings": "Wednesday: 10:00 AM - 6:00 PM",
+          "entry_fee": "Free",
+          "location": {
+            "lat": 15.552,
+            "lng": 73.751
+          },
+          "best_time_to_visit": "November to March",
+          "user_ratings": 4.4,
+          "tags": ["Shopping", "Cultural"]
+        },
+        {
+          "city": "Goa",
+          "place_name": "Palolem Beach",
+          "category": "Beach",
+          "description": "A picturesque beach known for its calm waters and scenic beauty, perfect for relaxation.",
+          "timings": "Open 24 hours",
+          "entry_fee": "Free",
+          "location": {
+            "lat": 15.067,
+            "lng": 74.071
+          },
+          "best_time_to_visit": "November to February",
+          "user_ratings": 4.6,
+          "tags": ["Beach", "Relaxation"]
+        }
+      ]
+    }
+  }
+  
+
   const scrollToSection = (sectionId: string) => {
     const section = sectionId === 'flightOptions' ? flightOptionsRef.current : stayOptionsRef.current;
     if (section) {
@@ -156,7 +258,7 @@ const Page = () => {
             <LocalVendors />
           </div>
           <div>
-            <ChatbotPlaceholder />
+            <Chatbot ContextJson={travel_itinerary} city={selectedCity} />
           </div>
         </div>
       </main>
