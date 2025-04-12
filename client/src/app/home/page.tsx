@@ -44,10 +44,11 @@ const Page = () => {
   const [selectedDay, setSelectedDay] = useState(1);
   const [totalDays, setTotalDays] = useState(7); // Fallback to 7 days
   const [selectedCity, setSelectedCity] = useState<CityName>("default");
-  const [itinerary, setItinerary] = useState<any | null>(null); // For fetched itinerary
 
   const flightOptionsRef = useRef<HTMLDivElement>(null);
   const stayOptionsRef = useRef<HTMLDivElement>(null);
+
+  const [itinerary, setItinerary] = useState<Record<string, any> | null>(null);
 
   const fetchItinerary = async () => {
     const apiUrl = "http://127.0.0.1:5005/trip";
@@ -66,7 +67,7 @@ const Page = () => {
       });
       const data = await response.json();
       if (data?.data) {
-        setItinerary(data.data);
+        setItinerary(data.data); // Save all days' data in state
       }
     } catch (error) {
       console.error("Error fetching itinerary:", error);
@@ -139,7 +140,7 @@ const Page = () => {
         >
           <div>
             {itinerary ? (
-              <Itinerary selectedDay={selectedDay} />
+              <Itinerary selectedDay={selectedDay} allDaysData={itinerary} />
             ) : (
               <p>Loading itinerary...</p>
             )}

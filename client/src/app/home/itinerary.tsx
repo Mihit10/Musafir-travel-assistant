@@ -1,4 +1,3 @@
-// components/Itinerary.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,6 +5,7 @@ import Link from "next/link";
 
 type ItineraryProps = {
   selectedDay: number;
+  allDaysData: Record<string, any>; // Pass all days' data as a prop
 };
 
 type Place = {
@@ -14,57 +14,28 @@ type Place = {
   description: string;
 };
 
-const Itinerary: React.FC<ItineraryProps> = ({ selectedDay }) => {
+const Itinerary: React.FC<ItineraryProps> = ({ selectedDay, allDaysData }) => {
   const [places, setPlaces] = useState<Place[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchItinerary = async () => {
-      try {
-        setIsLoading(true);
+    if (allDaysData) {
+      const dayKey = `day_${selectedDay}`;
+      const dayData = allDaysData[dayKey];
 
-        const response = await fetch("http://127.0.0.1:5005/trip", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            state: "Himachal",
-            check_in_date: "2025-06-18",
-            check_out_date: "2025-06-25",
-            preferences: ["nature", "adventure", "heritage"],
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch itinerary data");
-        }
-
-        const data = await response.json();
-
-        // Extract places for the selected day
-        const dayKey = `day_${selectedDay}`;
-        const dayData = data.data[dayKey];
-
+      if (dayData) {
         const extractedPlaces = Object.keys(dayData).map((key, index) => ({
           id: key,
           name: dayData[key].name,
           description: dayData[key].description,
         }));
-
         setPlaces(extractedPlaces);
-      } catch (error) {
-        console.error("Error fetching itinerary data:", error);
-        setPlaces([]); // Reset places on error
-      } finally {
-        setIsLoading(false);
+      } else {
+        setPlaces([]); // No data for the selected day
       }
-    };
+    }
+  }, [selectedDay, allDaysData]);
 
-    fetchItinerary();
-  }, [selectedDay]);
-
-  if (isLoading) {
+  if (!allDaysData) {
     return <p>Loading itinerary...</p>;
   }
 
