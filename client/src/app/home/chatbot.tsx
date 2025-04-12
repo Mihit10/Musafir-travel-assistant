@@ -106,6 +106,7 @@ Use Markdown formatting:
 - **bold** for emphasis
 - \`code\` for commands
 - bullet lists when listing steps
+try to keep your respnse short and simple
 `;
 
       const result = await model.generateContent([context, input]);
