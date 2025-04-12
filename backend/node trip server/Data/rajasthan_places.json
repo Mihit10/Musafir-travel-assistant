@@ -1,0 +1,152 @@
+[
+  {
+    "city": "Rajasthan",
+    "place_name": "Amber Fort",
+    "category": "Historic",
+    "description": "A majestic 16th-century fort known for its artistic Hindu-style elements, including the Sheesh Mahal and Diwan-e-Aam.",
+    "timings": "8:00 AM - 5:30 PM",
+    "entry_fee": "INR 100 (Indians), INR 500 (Foreigners)",
+    "location": {
+      "lat": 26.9855,
+      "lng": 75.8513
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.6,
+    "tags": ["Historic", "Adventure"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Hawa Mahal",
+    "category": "Historic",
+    "description": "Known as the 'Palace of Winds', this five-story pink sandstone structure features 953 small windows called jharokhas.",
+    "timings": "9:00 AM - 4:30 PM",
+    "entry_fee": "INR 50 (Indians), INR 200 (Foreigners)",
+    "location": {
+      "lat": 26.9239,
+      "lng": 75.8267
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.2,
+    "tags": ["Historic", "Shopping"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "City Palace, Udaipur",
+    "category": "Historic",
+    "description": "An architectural marvel on the banks of Lake Pichola, showcasing a blend of Rajasthani and Mughal styles.",
+    "timings": "9:30 AM - 5:30 PM",
+    "entry_fee": "INR 250 (Indians), INR 500 (Foreigners)",
+    "location": {
+      "lat": 24.576,
+      "lng": 73.6835
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.5,
+    "tags": ["Historic", "Nature"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Mehrangarh Fort",
+    "category": "Historic",
+    "description": "One of the largest forts in India, offering panoramic views of Jodhpur and housing a museum with royal artifacts.",
+    "timings": "9:00 AM - 5:00 PM",
+    "entry_fee": "INR 100 (Indians), INR 600 (Foreigners)",
+    "location": {
+      "lat": 26.2986,
+      "lng": 73.0186
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.7,
+    "tags": ["Historic", "Adventure"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Pushkar Lake",
+    "category": "Religious",
+    "description": "A sacred lake surrounded by 52 ghats, significant for Hindu rituals and the annual Pushkar Camel Fair.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 26.4876,
+      "lng": 74.5505
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.4,
+    "tags": ["Religious", "Cultural"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Ranthambore National Park",
+    "category": "Nature",
+    "description": "A renowned wildlife sanctuary known for its tiger population and diverse flora and fauna.",
+    "timings": "6:30 AM - 10:00 AM; 2:30 PM - 6:00 PM",
+    "entry_fee": "INR 150 (Indians), INR 750 (Foreigners) per safari",
+    "location": {
+      "lat": 26.0173,
+      "lng": 76.5026
+    },
+    "best_time_to_visit": "October to June",
+    "user_ratings": 4.5,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Chittorgarh Fort",
+    "category": "Historic",
+    "description": "The largest fort in India, symbolizing Rajput valor and featuring several palaces, gates, and temples.",
+    "timings": "9:00 AM - 5:00 PM",
+    "entry_fee": "INR 50 (Indians), INR 200 (Foreigners)",
+    "location": {
+      "lat": 24.8887,
+      "lng": 74.6426
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.6,
+    "tags": ["Historic", "Adventure"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Karni Mata Temple",
+    "category": "Religious",
+    "description": "Also known as the 'Rat Temple', home to thousands of revered rats considered sacred.",
+    "timings": "4:00 AM - 10:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 27.7986,
+      "lng": 73.3469
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.0,
+    "tags": ["Religious", "Cultural"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Mount Abu",
+    "category": "Nature",
+    "description": "Rajasthan's only hill station, offering cool climate, scenic views, and the famous Dilwara Temples.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 24.5925,
+      "lng": 72.7156
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.3,
+    "tags": ["Nature", "Religious"]
+  },
+  {
+    "city": "Rajasthan",
+    "place_name": "Jaisalmer Fort",
+    "category": "Historic",
+    "description": "A UNESCO World Heritage Site, this 'Golden Fort' is one of the few living forts with shops, hotels, and ancient residences. It is a prime example of medieval Indian military architecture and offers a stunning view of the Thar Desert.",
+    "timings": "9:00 AM - 6:00 PM",
+    "entry_fee": "INR 50 (Indians), INR 200 (Foreigners)",
+    "location": {
+      "lat": 26.9124,
+      "lng": 70.9176
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.7,
+    "tags": ["Historic", "Adventure"]
+  }
+]

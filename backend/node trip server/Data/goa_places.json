@@ -1,0 +1,122 @@
+[
+  {
+    "city": "Goa",
+    "place_name": "Basilica of Bom Jesus",
+    "category": "Religious",
+    "description": "A UNESCO World Heritage Site, this 16th-century basilica houses the mortal remains of St. Francis Xavier and is a prime example of baroque architecture in India.",
+    "timings": "Monday to Saturday: 9:00 AM - 6:30 PM; Sunday: 10:30 AM - 6:30 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.5009,
+      "lng": 73.9122
+    },
+    "best_time_to_visit": "November to March",
+    "user_ratings": 4.7,
+    "tags": ["Historic", "Religious"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Fort Aguada",
+    "category": "Historic",
+    "description": "A 17th-century Portuguese fort overlooking the Arabian Sea, featuring a lighthouse and a former jail, now a museum showcasing Goa's freedom struggle.",
+    "timings": "Fort: 9:30 AM - 6:00 PM; Lighthouse: 12:00 PM - 5:00 PM",
+    "entry_fee": "INR 20",
+    "location": {
+      "lat": 15.492,
+      "lng": 73.7736
+    },
+    "best_time_to_visit": "November to February",
+    "user_ratings": 4.4,
+    "tags": ["Historic", "Adventure"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Dudhsagar Waterfalls",
+    "category": "Nature",
+    "description": "One of India's tallest waterfalls, cascading from a height of 310 meters, located within the Bhagwan Mahaveer Wildlife Sanctuary.",
+    "timings": "Open all day; Jeep safaris: 9:00 AM - 4:00 PM",
+    "entry_fee": "Jeep safari charges apply (approximately ₹500-₹800 per person)",
+    "location": {
+      "lat": 15.314,
+      "lng": 74.314
+    },
+    "best_time_to_visit": "June to September",
+    "user_ratings": 4.6,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Chapora Fort",
+    "category": "Historic",
+    "description": "A fort offering panoramic views of the Chapora River and Vagator Beach, popularized by the movie 'Dil Chahta Hai'.",
+    "timings": "8:00 AM - 5:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.601,
+      "lng": 73.741
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.3,
+    "tags": ["Historic", "Nature"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Mapusa Municipal Market",
+    "category": "Shopping",
+    "description": "A traditional market in Mapusa, known for its vibrant Friday market where locals sell spices, fruits, jewelry, and more.",
+    "timings": "Monday to Saturday: 8:00 AM - 6:00 PM; Closed on Sundays",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.591,
+      "lng": 73.82
+    },
+    "best_time_to_visit": "November to March",
+    "user_ratings": 4.2,
+    "tags": ["Shopping", "Cultural"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Baga Beach",
+    "category": "Beach",
+    "description": "A lively beach known for its nightlife, water sports, and beach shacks offering delicious seafood.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.5578,
+      "lng": 73.7513
+    },
+    "best_time_to_visit": "November to March",
+    "user_ratings": 4.5,
+    "tags": ["Beach", "Adventure", "Shopping"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Calangute Beach",
+    "category": "Beach",
+    "description": "Known as the 'Queen of Beaches,' this popular beach offers vibrant shacks, water sports, and stunning sunset views.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.5439,
+      "lng": 73.7551
+    },
+    "best_time_to_visit": "November to March",
+    "user_ratings": 4.4,
+    "tags": ["Beach", "Adventure"]
+  },
+  {
+    "city": "Goa",
+    "place_name": "Anjuna Beach",
+    "category": "Beach",
+    "description": "Famous for its trance parties and flea market, Anjuna Beach is a hub for hippie culture and nightlife.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 15.5753,
+      "lng": 73.7438
+    },
+    "best_time_to_visit": "November to February",
+    "user_ratings": 4.3,
+    "tags": ["Beach", "Shopping", "Adventure"]
+  }
+]

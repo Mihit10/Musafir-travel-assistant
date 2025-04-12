@@ -1,0 +1,77 @@
+[
+  {
+    "city": "Kerala",
+    "place_name": "Munnar",
+    "category": "Nature",
+    "description": "A picturesque hill station known for its sprawling tea plantations, misty hills, and pleasant climate.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 10.0889,
+      "lng": 77.0595
+    },
+    "best_time_to_visit": "September to May",
+    "user_ratings": 4.7,
+    "tags": ["Nature", "Mountain"]
+  },
+  {
+    "city": "Kerala",
+    "place_name": "Alleppey Backwaters",
+    "category": "Nature",
+    "description": "Famous for houseboat cruises through serene backwaters, offering a glimpse into rural Kerala life.",
+    "timings": "Open all day",
+    "entry_fee": "Varies by houseboat service",
+    "location": {
+      "lat": 9.4981,
+      "lng": 76.3388
+    },
+    "best_time_to_visit": "November to February",
+    "user_ratings": 4.6,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Kerala",
+    "place_name": "Sree Padmanabhaswamy Temple",
+    "category": "Religious",
+    "description": "An ancient temple dedicated to Lord Vishnu, known for its intricate architecture and immense wealth.",
+    "timings": "3:30 AM - 12:00 PM, 5:00 PM - 7:20 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 8.4826,
+      "lng": 76.9476
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.5,
+    "tags": ["Religious", "Historic"]
+  },
+  {
+    "city": "Kerala",
+    "place_name": "Kovalam Beach",
+    "category": "Beach",
+    "description": "A crescent-shaped beach known for its shallow waters and low tidal waves, ideal for swimming.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 8.402,
+      "lng": 76.9784
+    },
+    "best_time_to_visit": "November to February",
+    "user_ratings": 4.4,
+    "tags": ["Beach", "Nature"]
+  },
+  {
+    "city": "Kerala",
+    "place_name": "Periyar Wildlife Sanctuary",
+    "category": "Nature",
+    "description": "A protected area famous for its elephant populations and scenic boat cruises on Periyar Lake.",
+    "timings": "6:00 AM - 7:00 PM",
+    "entry_fee": "INR 25 for Indians, INR 300 for foreigners",
+    "location": {
+      "lat": 9.4669,
+      "lng": 77.251
+    },
+    "best_time_to_visit": "October to June",
+    "user_ratings": 4.5,
+    "tags": ["Nature", "Adventure"]
+  }
+]

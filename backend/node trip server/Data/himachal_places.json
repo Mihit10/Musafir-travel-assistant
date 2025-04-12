@@ -1,0 +1,212 @@
+[
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Rohtang Pass",
+    "category": "Nature",
+    "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports.",
+    "timings": "9:00 AM - 5:00 PM",
+    "entry_fee": "Permit required; fee varies",
+    "location": {
+      "lat": 32.3643,
+      "lng": 77.2658
+    },
+    "best_time_to_visit": "May to October",
+    "user_ratings": 4.6,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Jakhoo Temple",
+    "category": "Religious",
+    "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla.",
+    "timings": "7:00 AM - 8:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 31.1048,
+      "lng": 77.1734
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.5,
+    "tags": ["Religious", "Historic"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Khajjiar Lake",
+    "category": "Nature",
+    "description": "Often referred to as 'Mini Switzerland of India', this lake is surrounded by meadows and forests.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 32.5428,
+      "lng": 76.0616
+    },
+    "best_time_to_visit": "March to October",
+    "user_ratings": 4.4,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Kangra Fort",
+    "category": "Historic",
+    "description": "One of the oldest forts in India, offering panoramic views of the surrounding valley.",
+    "timings": "9:00 AM - 6:00 PM",
+    "entry_fee": "INR 150 for Indians, INR 300 for foreigners",
+    "location": {
+      "lat": 32.0966,
+      "lng": 76.2711
+    },
+    "best_time_to_visit": "September to June",
+    "user_ratings": 4.3,
+    "tags": ["Historic", "Adventure"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Dalai Lama Temple Complex",
+    "category": "Religious",
+    "description": "A spiritual center and residence of the Dalai Lama, featuring a peaceful ambiance and Tibetan architecture.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 32.2381,
+      "lng": 76.3201
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.7,
+    "tags": ["Religious", "Cultural"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Hadimba Devi Temple",
+    "category": "Religious",
+    "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture.",
+    "timings": "8:00 AM - 6:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 32.2432,
+      "lng": 77.1887
+    },
+    "best_time_to_visit": "May to July, September to October",
+    "user_ratings": 4.6,
+    "tags": ["Religious", "Historic", "Nature"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Solang Valley",
+    "category": "Adventure",
+    "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
+    "timings": "9:00 AM - 5:00 PM",
+    "entry_fee": "Varies by activity",
+    "location": {
+      "lat": 32.3186,
+      "lng": 77.1584
+    },
+    "best_time_to_visit": "December to February for snow activities; May to June for paragliding",
+    "user_ratings": 4.7,
+    "tags": ["Adventure", "Nature", "Mountain"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Vashisht Baths",
+    "category": "Nature",
+    "description": "Natural hot springs with separate bathing areas for men and women, believed to have healing properties.",
+    "timings": "7:00 AM - 9:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 32.2575,
+      "lng": 77.1887
+    },
+    "best_time_to_visit": "Year-round",
+    "user_ratings": 4.3,
+    "tags": ["Nature", "Religious"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Great Himalayan National Park",
+    "category": "Nature",
+    "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities.",
+    "timings": "10:00 AM - 5:30 PM",
+    "entry_fee": "INR 100 for Indians, INR 400 for foreigners",
+    "location": {
+      "lat": 31.8024,
+      "lng": 77.3566
+    },
+    "best_time_to_visit": "April to June, September to November",
+    "user_ratings": 4.5,
+    "tags": ["Nature", "Adventure", "Mountain"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Bijli Mahadev Temple",
+    "category": "Religious",
+    "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 31.9574,
+      "lng": 77.2488
+    },
+    "best_time_to_visit": "March to September",
+    "user_ratings": 4.4,
+    "tags": ["Religious", "Historic", "Nature"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "The Ridge",
+    "category": "Historic",
+    "description": "A spacious open street in the heart of Shimla, offering panoramic views of the surrounding mountains and colonial-era buildings.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 31.1048,
+      "lng": 77.1734
+    },
+    "best_time_to_visit": "March to June, September to November",
+    "user_ratings": 4.5,
+    "tags": ["Historic", "Shopping", "Nature"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Jakhoo Hill",
+    "category": "Nature",
+    "description": "The highest point in Shimla, offering a panoramic view of the city and home to the ancient Jakhoo Temple.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 31.1033,
+      "lng": 77.182
+    },
+    "best_time_to_visit": "March to June, September to November",
+    "user_ratings": 4.4,
+    "tags": ["Nature", "Religious", "Adventure"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Christ Church",
+    "category": "Religious",
+    "description": "The second oldest church in North India, known for its neo-Gothic architecture and stained glass windows.",
+    "timings": "8:00 AM - 6:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 31.1044,
+      "lng": 77.1734
+    },
+    "best_time_to_visit": "March to June, September to November",
+    "user_ratings": 4.3,
+    "tags": ["Religious", "Historic"]
+  },
+  {
+    "city": "Himachal Pradesh",
+    "place_name": "Anjani Mahadev",
+    "category": "Religious",
+    "description": "A sacred site featuring a naturally formed ice Shivling during winters, accessible via a short trek or ATV ride.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 32.3186,
+      "lng": 77.1584
+    },
+    "best_time_to_visit": "December to February",
+    "user_ratings": 4.6,
+    "tags": ["Religious", "Adventure", "Nature"]
+  }
+]
