@@ -3,24 +3,119 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Default travel theme */
+  --color-primary: #FFF0D1;
+  --color-secondary: #664343;
+  --color-tertiary: #4A6FA5;
 }
 
-@theme inline {
+/* City-specific theme variables */
+.theme-goa {
+  --color-primary: #E0F7FA; /* Light blue - representing beach/ocean */
+  --color-secondary: #00796B; /* Teal green - representing tropical vegetation */
+  --color-tertiary: #FF8F00; /* Orange - representing sunset/vibrant culture */
+}
+
+.theme-kerala {
+  --color-primary: #E8F5E9; /* Light green - representing backwaters/lush vegetation */
+  --color-secondary: #33691E; /* Dark green - representing tea plantations */
+  --color-tertiary: #01579B; /* Deep blue - representing coastal waters */
+}
+
+.theme-himachal {
+  --color-primary: #E3F2FD; /* Light sky blue - representing clear mountain skies */
+  --color-secondary: #5D4037; /* Brown - representing wooden architecture/forest */
+  --color-tertiary: #1A237E; /* Deep blue - representing mountain depths */
+}
+
+.theme-uttarakhand {
+  --color-primary: #F3E5F5; /* Light purple - representing spiritual essence */
+  --color-secondary: #33691E; /* Forest green - representing dense forests */
+  --color-tertiary: #01579B; /* Deep blue - representing rivers and lakes */
+}
+
+.theme-rajasthan {
+  --color-primary: #FFF8E1; /* Desert sand - representing deserts */
+  --color-secondary: #BF360C; /* Terracotta - representing forts/palaces */
+  --color-tertiary: #880E4F; /* Deep pink - representing traditional textiles */
+}
+
+:root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ededed;
     --foreground: #ededed;
+    
+    /* Optional: adjust the travel theme colors for dark mode */
+    --color-primary: #664343;
+    --color-secondary: #FFF0D1;
+    --color-tertiary: #4A6FA5;
   }
+  
+  /* Adjust city themes for dark mode if needed */
+  .theme-goa {
+    --color-primary: #01579B;
+    --color-secondary: #E0F7FA;
+    --color-tertiary: #FF8F00;
+  }
+  
+  /* Add dark mode overrides for other city themes if needed */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Add smooth transitions for color changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Utility classes for components that use these colors */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-tertiary {
+  color: var(--color-tertiary);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.border-secondary {
+  border-color: var(--color-secondary);
+}
+
+.border-tertiary {
+  border-color: var(--color-tertiary);
 }
