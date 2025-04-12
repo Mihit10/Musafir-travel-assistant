@@ -102,11 +102,12 @@ Here is the user's travel itinerary in JSON:
 ${JSON.stringify(ContextJson, null, 2)}
 \`\`\`
 
+Try to keep your respnse short and simple
+You do not need to include the JSON in your response. include only the relevant information.
 Use Markdown formatting:
 - **bold** for emphasis
 - \`code\` for commands
 - bullet lists when listing steps
-try to keep your respnse short and simple
 `;
 
       const result = await model.generateContent([context, input]);
