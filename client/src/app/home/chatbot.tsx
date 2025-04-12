@@ -8,7 +8,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from "react-markdown";
 
 // 🔐 Reminder: Move your API key to a secure backend or environment variable for production!
-const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "YOUR_API_KEY";
+const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "AIzaSyCs4b1PmQsC6VFtP6BIG5yADPjKMsXLSys";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // 🔹 Types
