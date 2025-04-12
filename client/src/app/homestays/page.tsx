@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify"; // For toast notifications
 import "react-toastify/dist/ReactToastify.css";
 
-const API_URL = "http://localhost:3005/homestays"; // Your backend API
+const API_URL = "https://rhino-frank-tightly.ngrok-free.app/homestays"; // Your backend API
 
 const HomestaysPage = () => {
   const [homestays, setHomestays] = useState([]);
@@ -32,7 +32,13 @@ const HomestaysPage = () => {
   useEffect(() => {
     const fetchHomestays = async () => {
       try {
-        const response = await axios.get(API_URL);
+        const response = await axios.get(API_URL, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
         setHomestays(response.data);
       } catch (error) {
         toast.error("Failed to load homestays");

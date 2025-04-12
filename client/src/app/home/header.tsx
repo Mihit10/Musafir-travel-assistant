@@ -25,7 +25,7 @@ const Header = ({ totalDays, onDayChange, scrollToSection }: HeaderProps) => {
       boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
       padding: '1rem',
       position: 'sticky',
-      top: 0,
+      top: 64,
       zIndex: 50
     }}>
       <div style={{
