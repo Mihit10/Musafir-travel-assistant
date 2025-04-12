@@ -33,27 +33,27 @@ interface PreferenceInfo {
 const cities: CityInfo[] = [
   { 
     name: "Goa", 
-    image: "/api/placeholder/800/500", 
+    image: "https://t4.ftcdn.net/jpg/01/44/63/23/360_F_144632345_JcJQ3Ebvh6vH779CBayNvfIaFzpxqDvz.jpg", 
     description: "Sun-soaked beaches, vibrant markets, and rich Portuguese heritage."
   },
   { 
     name: "Kerala", 
-    image: "/api/placeholder/800/500", 
+    image: "https://thumbs.dreamstime.com/b/icon-onam-harvest-onam-242667715.jpg", 
     description: "Serene backwaters, lush tea plantations, and ancient Ayurvedic traditions."
   },
   { 
     name: "Himachal", 
-    image: "/api/placeholder/800/500", 
+    image: "https://www.beingpahadia.com/wp-content/uploads/2022/07/imageedit_1_4413673411-300x300.png", 
     description: "Majestic mountains, adventure trails, and charming hill stations."
   },
   { 
     name: "Uttarakhand", 
-    image: "/api/placeholder/800/500", 
+    image: "https://pbs.twimg.com/profile_images/1321298153161871360/exotbW-u_400x400.jpg", 
     description: "Sacred rivers, spiritual temples, and stunning Himalayan vistas."
   },
   { 
     name: "Rajasthan", 
-    image: "/api/placeholder/800/500", 
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCEafZmwhl0DxdskcVwNyqWMF_NBxuVZEEOQ&s", 
     description: "Royal palaces, golden deserts, and vibrant cultural heritage."
   }
 ];
