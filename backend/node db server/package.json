@@ -1,7 +1,7 @@
 {
-  "name": "node",
+  "name": "node-db-server",
   "version": "1.0.0",
-  "description": "server for vendors and local guide",
+  "description": "server for vendors, local guide and homestays",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
