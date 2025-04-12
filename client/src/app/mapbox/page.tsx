@@ -1,144 +1,164 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZ29kZmF0aGVyOTc5IiwiYSI6ImNtNjJieWVqczB3ZGkybHNmc2l0dnE0M20ifQ.ik3djzZe9P9Xxw296r_dCA"; // Replace with your Mapbox token
 
-const places = [
-  {
-    name: "Chapora Fort",
-    description:
-      "A fort offering panoramic views of the Chapora River and Vagator Beach, popularized by the movie 'Dil Chahta Hai'.",
-    entry_fee: "Free",
-    timings: "8:00 AM - 5:00 PM",
-    location: { lat: 15.604782152280047, lng: 73.73696309568906 },
-    tags: ["Historic", "Nature"],
-  },
-  {
-    name: "Baga Beach",
-    description:
-      "A lively beach known for its nightlife, water sports, and beach shacks offering delicious seafood.",
-    entry_fee: "Free",
-    timings: "Open all day",
-    location: { lat: 15.5578, lng: 73.7513 },
-    tags: ["Beach", "Adventure", "Shopping"],
-  },
-  {
-    name: "Calangute Beach",
-    description:
-      "Known as the 'Queen of Beaches,' this popular beach offers vibrant shacks, water sports, and stunning sunset views.",
-    entry_fee: "Free",
-    timings: "Open all day",
-    location: { lat: 15.5439, lng: 73.7551 },
-    tags: ["Beach", "Adventure"],
-  },
-  {
-    name: "Anjuna Beach",
-    description:
-      "Famous for its trance parties and flea market, Anjuna Beach is a hub for hippie culture and nightlife.",
-    entry_fee: "Free",
-    timings: "Open all day",
-    location: { lat: 15.5753, lng: 73.7438 },
-    tags: ["Beach", "Shopping", "Adventure"],
-  },
-];
+interface Place {
+  id: string;
+  name: string;
+  description: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
 
-const MapPage = () => {
-  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+const MapPage: React.FC = () => {
+  const [placesByDay, setPlacesByDay] = useState<Record<string, Place[]>>({});
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    if (!mapContainerRef.current) return;
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5005/trip", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            state: "Himachal",
+            check_in_date: "2025-06-18",
+            check_out_date: "2025-06-25",
+            preferences: ["nature", "adventure", "heritage"],
+          }),
+        });
+
+        const data = await response.json();
+        const days: Record<string, any> = data.data;
+
+        const formattedPlacesByDay: Record<string, Place[]> = {};
+        Object.entries(days).forEach(([day, places]) => {
+          formattedPlacesByDay[day] = Object.values(places).map(
+            (place: any, index: number) => ({
+              id: `${day}_place_${index + 1}`,
+              name: place.name,
+              description: place.description,
+              location: {
+                lat: place.coordinates.latitude,
+                lng: place.coordinates.longitude,
+              },
+            })
+          );
+        });
+
+        setPlacesByDay(formattedPlacesByDay);
+      } catch (error) {
+        console.error("Error fetching places:", error);
+      }
+    };
+
+    fetchPlaces();
+  }, []);
+
+  useEffect(() => {
+    if (!mapContainerRef.current || Object.keys(placesByDay).length === 0)
+      return;
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [73.7513, 15.5578], // Center of the map
-      zoom: 12,
+      center: [77.2453, 32.3792], // Center the map around Himachal
+      zoom: 6,
     });
 
-    // Define colors for the markers
-    const markerColors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1"];
+    const dayColors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"];
 
-    // Add numbered markers for each place with custom colors
-    places.forEach((place, index) => {
-      const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-        `${place.name}: ${place.description}`
+    const fetchRoute = async (coordinates: [number, number][]) => {
+      const query = coordinates.map((coord) => coord.join(",")).join(";");
+      const response = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${query}?geometries=geojson&access_token=${mapboxgl.accessToken}`
       );
+      const data = await response.json();
+      return data.routes[0].geometry.coordinates;
+    };
 
-      const markerElement = document.createElement("div");
-      markerElement.className = "marker";
-      markerElement.style.backgroundColor = markerColors[index];
-      markerElement.style.width = "30px";
-      markerElement.style.height = "30px";
-      markerElement.style.borderRadius = "40%";
-      markerElement.style.color = "#ffffff";
-      markerElement.style.display = "flex";
-      markerElement.style.alignItems = "center";
-      markerElement.style.justifyContent = "center";
-      markerElement.style.fontSize = "16px";
-      markerElement.style.fontWeight = "bold";
-      markerElement.textContent = (index + 1).toString();
-
-      new mapboxgl.Marker(markerElement)
-        .setLngLat([place.location.lng, place.location.lat])
-        .setPopup(popup)
-        .addTo(map);
-    });
-
-    // Draw the route (1 → 2 → 3 → 4 → 1)
-    const fetchRoute = async () => {
-      const coordinates = places.map((place) => [
+    Object.entries(placesByDay).forEach(([day, places], dayIndex) => {
+      const dayColor = dayColors[dayIndex % dayColors.length];
+      const coordinates: [number, number][] = places.map((place) => [
         place.location.lng,
         place.location.lat,
       ]);
-      coordinates.push(coordinates[0]); // Close the loop
 
-      const waypoints = coordinates.map((coord) => coord.join(",")).join(";");
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${waypoints}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
+      // Add markers for each place
+      places.forEach((place, index) => {
+        const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          `${place.name}: ${place.description}`
+        );
 
-      const response = await fetch(url);
-      const data = await response.json();
+        const markerElement = document.createElement("div");
+        markerElement.className = "marker";
+        markerElement.style.backgroundColor = dayColor;
+        markerElement.style.width = "20px";
+        markerElement.style.height = "20px";
+        markerElement.style.borderRadius = "50%";
+        markerElement.style.color = "#fff";
+        markerElement.style.display = "flex";
+        markerElement.style.alignItems = "center";
+        markerElement.style.justifyContent = "center";
+        markerElement.style.fontSize = "12px";
+        markerElement.textContent = `${index + 1}`;
 
-      if (data.routes && data.routes.length) {
-        const route = data.routes[0].geometry;
+        new mapboxgl.Marker(markerElement)
+          .setLngLat([place.location.lng, place.location.lat])
+          .setPopup(popup)
+          .addTo(map);
+      });
 
-        map.addSource("route", {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: route,
-            properties: {},
-          },
-        });
+      // Fetch and draw the route
+      if (coordinates.length > 1) {
+        fetchRoute(coordinates).then((routeCoordinates) => {
+          map.on("load", () => {
+            map.addSource(`route-${day}`, {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                  type: "LineString",
+                  coordinates: routeCoordinates,
+                },
+              },
+            });
 
-        map.addLayer({
-          id: "route",
-          type: "line",
-          source: "route",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#FF5733",
-            "line-width": 5,
-          },
+            map.addLayer({
+              id: `route-${day}`,
+              type: "line",
+              source: `route-${day}`,
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: {
+                "line-color": dayColor,
+                "line-width": 4,
+              },
+            });
+          });
         });
       }
-    };
-
-    map.on("load", fetchRoute);
+    });
 
     return () => map.remove();
-  }, []);
+  }, [placesByDay]);
 
   return (
     <div>
       <h1 className="text-center text-2xl font-bold my-4">
-        Map with Place Markers and Route
+        Dynamic Map with Routes and Places
       </h1>
       <div
         ref={mapContainerRef}
