@@ -261,8 +261,7 @@ export default function CommunityPage() {
         </motion.div> */}
 
 <div className="min-h-screen pt-20" style={{ backgroundColor: currentTheme.primary }}>
-  {/* Simple Header with Title */}
-  <Header /> {/* Header Component */}
+ 
 
   <motion.div 
     className="py-12 text-center"
@@ -639,7 +638,7 @@ export default function CommunityPage() {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
     </>
   );

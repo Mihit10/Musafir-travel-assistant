@@ -1,3 +1,4 @@
+"use client";
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, ArrowUpCircle } from 'lucide-react';
 
