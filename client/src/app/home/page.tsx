@@ -149,7 +149,7 @@ const Page = () => {
           "city": "Goa",
           "place_name": "Palolem Beach",
           "category": "Beach",
-          "description": "A picturesque beach known for its calm waters and scenic beauty, perfect for relaxation.",
+          "description": "A picturesque beach known for it's calm waters and scenic beauty, perfect for relaxation.",
           "timings": "Open 24 hours",
           "entry_fee": "Free",
           "location": {
