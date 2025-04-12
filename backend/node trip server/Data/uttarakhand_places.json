@@ -1,0 +1,152 @@
+[
+  {
+    "city": "Uttarakhand",
+    "place_name": "Triveni Ghat",
+    "category": "Religious",
+    "description": "A sacred ghat on the banks of the Ganges River in Rishikesh, known for its evening Ganga Aarti, attracting devotees and tourists alike.",
+    "timings": "Open all day; Ganga Aarti: 6:00 PM - 7:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 30.0869,
+      "lng": 78.2714
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.6,
+    "tags": ["Religious"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Kainchi Dham",
+    "category": "Religious",
+    "description": "An ashram dedicated to Neem Karoli Baba, situated in the Kumaon region, known for its serene environment and spiritual significance.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 29.5702,
+      "lng": 79.6072
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.6,
+    "tags": ["Religious"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Nainital Lake",
+    "category": "Nature",
+    "description": "A picturesque, crescent-shaped lake surrounded by hills, offering boating and scenic views, making it a popular tourist destination.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 29.3802,
+      "lng": 79.4452
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.7,
+    "tags": ["Nature", "Adventure"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Har Ki Pauri",
+    "category": "Religious",
+    "description": "A famous ghat in Haridwar, known for its evening Ganga Aarti and believed to be the spot where Lord Vishnu left his footprint.",
+    "timings": "Open all day; Ganga Aarti: 6:00 PM - 7:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 29.9456,
+      "lng": 78.1642
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.6,
+    "tags": ["Religious"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Sahasradhara",
+    "category": "Nature",
+    "description": "Known as the 'Thousandfold Spring', this spot in Dehradun is famous for its sulfur-rich water springs and scenic beauty.",
+    "timings": "9:00 AM - 6:00 PM",
+    "entry_fee": "INR 30",
+    "location": {
+      "lat": 30.3872,
+      "lng": 78.1316
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.3,
+    "tags": ["Nature"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Tapkeshwar Temple",
+    "category": "Religious",
+    "description": "An ancient Shiva temple located in a cave, with water dripping from the ceiling, creating a unique worship experience.",
+    "timings": "6:00 AM - 7:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 30.3472,
+      "lng": 78.0711
+    },
+    "best_time_to_visit": "March to June",
+    "user_ratings": 4.4,
+    "tags": ["Religious"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Ram Jhula",
+    "category": "Historic",
+    "description": "A suspension bridge in Rishikesh, offering panoramic views of the Ganges and connecting various ashrams and temples.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 30.1075,
+      "lng": 78.3147
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.5,
+    "tags": ["Historic"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Lakshman Jhula",
+    "category": "Historic",
+    "description": "An iron suspension bridge in Rishikesh, believed to be the spot where Lord Rama's brother Lakshman crossed the Ganges on a jute rope.",
+    "timings": "Open all day",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 30.0863,
+      "lng": 78.3194
+    },
+    "best_time_to_visit": "October to March",
+    "user_ratings": 4.6,
+    "tags": ["Historic"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Kedarnath Temple",
+    "category": "Religious",
+    "description": "A sacred Hindu temple dedicated to Lord Shiva, located in the Garhwal Himalayas, attracting pilgrims from across the country.",
+    "timings": "5:00 AM - 9:00 PM",
+    "entry_fee": "Free",
+    "location": {
+      "lat": 30.7343,
+      "lng": 79.0669
+    },
+    "best_time_to_visit": "May to June, September to October",
+    "user_ratings": 4.8,
+    "tags": ["Religious"]
+  },
+  {
+    "city": "Uttarakhand",
+    "place_name": "Rajaji National Park",
+    "category": "Nature",
+    "description": "A national park and tiger reserve located in the foothills of the Himalayas, known for its rich biodiversity and scenic landscapes. It is home to several species of animals like tigers, elephants, and leopards.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entry_fee": "INR 50 (Indians), INR 200 (Foreigners)",
+    "location": {
+      "lat": 30.4016,
+      "lng": 78.1947
+    },
+    "best_time_to_visit": "November to June",
+    "user_ratings": 4.5,
+    "tags": ["Nature", "Adventure"]
+  }
+]

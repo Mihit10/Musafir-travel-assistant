@@ -1,0 +1,189 @@
+{
+  "day_1": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.3792,
+        "longitude": 77.2453
+      },
+      "name": "Rohtang Pass",
+      "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports.",
+      "travel_time_to_next": 29
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 32.2871,
+        "longitude": 77.1939
+      },
+      "name": "Solang Valley",
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_2": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.2871,
+        "longitude": 77.1939
+      },
+      "name": "Solang Valley",
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
+      "travel_time_to_next": 146
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 31.1033,
+        "longitude": 77.1733
+      },
+      "name": "Jakhoo Hill",
+      "description": "The highest point in Shimla, offering a panoramic view of the city and home to the ancient Jakhoo Temple.",
+      "travel_time_to_next": 146
+    },
+    "place_3": {
+      "coordinates": {
+        "latitude": 31.1033,
+        "longitude": 77.1733
+      },
+      "name": "Anjani Mahadev",
+      "description": "A sacred site featuring a naturally formed ice Shivling during winters, accessible via a short trek or ATV ride.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_3": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 31.1033,
+        "longitude": 77.1733
+      },
+      "name": "Anjani Mahadev",
+      "description": "A sacred site featuring a naturally formed ice Shivling during winters, accessible via a short trek or ATV ride.",
+      "travel_time_to_next": 154
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 32.0958,
+        "longitude": 76.2631
+      },
+      "name": "Kangra Fort",
+      "description": "One of the oldest forts in India, offering panoramic views of the surrounding valley.",
+      "travel_time_to_next": 31
+    },
+    "place_3": {
+      "coordinates": {
+        "latitude": 32.2389,
+        "longitude": 77.1872
+      },
+      "name": "Hadimba Devi Temple",
+      "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_4": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.2389,
+        "longitude": 77.1872
+      },
+      "name": "Hadimba Devi Temple",
+      "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture.",
+      "travel_time_to_next": 2
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 32.2492,
+        "longitude": 77.1929
+      },
+      "name": "Vashisht Baths",
+      "description": "Natural hot springs with separate bathing areas for men and women, believed to have healing properties.",
+      "travel_time_to_next": 24
+    },
+    "place_3": {
+      "coordinates": {
+        "latitude": 32.2739,
+        "longitude": 77.2021
+      },
+      "name": "Bijli Mahadev Temple",
+      "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_5": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.2739,
+        "longitude": 77.2021
+      },
+      "name": "Bijli Mahadev Temple",
+      "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley.",
+      "travel_time_to_next": 127
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 32.5439,
+        "longitude": 76.0472
+      },
+      "name": "Khajjiar Lake",
+      "description": "Often referred to as 'Mini Switzerland of India', this lake is surrounded by meadows and forests.",
+      "travel_time_to_next": 43
+    },
+    "place_3": {
+      "coordinates": {
+        "latitude": 32.2871,
+        "longitude": 77.1939
+      },
+      "name": "Solang Valley",
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_6": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.2871,
+        "longitude": 77.1939
+      },
+      "name": "Solang Valley",
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
+      "travel_time_to_next": 175
+    },
+    "place_2": {
+      "coordinates": {
+        "latitude": 32.3792,
+        "longitude": 77.2453
+      },
+      "name": "Rohtang Pass",
+      "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports.",
+      "travel_time_to_next": 29
+    },
+    "place_3": {
+      "coordinates": {
+        "latitude": 31.7442,
+        "longitude": 77.4542
+      },
+      "name": "Great Himalayan National Park",
+      "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_7": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 31.7442,
+        "longitude": 77.4542
+      },
+      "name": "Great Himalayan National Park",
+      "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities.",
+      "travel_time_to_next": 0
+    }
+  },
+  "day_8": {
+    "place_1": {
+      "coordinates": {
+        "latitude": 32.2431,
+        "longitude": 77.1872
+      },
+      "name": "New Scenic Spot",
+      "description": "A beautiful new spot added to the itinerary.",
+      "travel_time_to_next": 45
+    }
+  }
+}
