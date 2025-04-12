@@ -6,7 +6,7 @@ import BenitoGrid from './detail';
 const Page = () => {
   return (
     <div>
-      <BenitoGrid/>
+      <BenitoGrid place = "Solang Valley"/>
     </div>
   );
 };

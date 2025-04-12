@@ -10,7 +10,9 @@ import { toast } from "react-toastify"; // For toast notifications
 
 const API_URL = "https://rhino-frank-tightly.ngrok-free.app/homestays"; // Your backend API
 
-const tajMahalData = {
+
+
+const placeData = {
   title: "Taj Mahal",
   location: "Agra, India",
   mainImage: "/api/placeholder/800/800",
@@ -26,18 +28,6 @@ const tajMahalData = {
     { name: "Fatehpur Sikri", image: "/api/placeholder/200/200" }
   ],
   proTip: "Visit during sunrise to avoid crowds and capture the marble changing colors in the morning light.",
-  localFood: [
-    {
-      name: "Petha",
-      image: "/api/placeholder/200/200",
-      description: "A translucent sweet made from ash gourd, native to Agra."
-    },
-    {
-      name: "Gajak",
-      image: "/api/placeholder/200/200",
-      description: "Crispy sesame sweet, popular during winters."
-    }
-  ],
   history: "Built between 1632 and 1653 by Emperor Shah Jahan in memory of his beloved wife Mumtaz Mahal, the Taj Mahal is considered the greatest architectural achievement in the whole range of Indo-Islamic architecture.",
   placeInfo: {
     entryFee: "₹1,100 for foreigners, ₹50 for Indians",
@@ -45,14 +35,24 @@ const tajMahalData = {
     restrictions: "No tripods, food, or smoking",
     dressCode: "Modest clothing recommended"
   },
-  realtimeData: {
-    crowdStatus: "Moderate",
-    visitorCount: "~450 visitors now",
-    weather: "28°C, Sunny"
-  }
 };
 
 
+interface ThingToDo {
+  name: string;
+  distance: string;
+  time: string;
+}
+
+interface NearbyAttraction {
+  name: string;
+  time: string;
+}
+
+interface PlaceData {
+  thingsToDo: ThingToDo[];
+  nearbyAttractions: NearbyAttraction[];
+}
 
 // Custom animation variants for directional gradient transitions
 const leftToRightGradient = {
@@ -120,7 +120,95 @@ const fadeInScale = {
   }
 };
 
-export default function BenitoFlexbox() {
+interface BenitoFlexboxProps {
+  place: string;
+}
+
+export default function BenitoFlexbox({ place }: BenitoFlexboxProps) {
+  const [response, setResponse] = useState("");
+  const [placeData, setPlaceData] = useState<{ [key: string]: any } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+
+  useEffect(() => {
+    if (!prompt) return;
+
+    const callGroq = async () => {
+      setLoading(true);
+      setResponse("");
+
+      const prompt = `
+You are an expert travel assistant.
+No field should be None. Give N/A if not applicable. 
+If no history found fill history with fun facts.
+If open hours not found fill open hours with preferable hours.
+Place info should be very concise. Dont use round brackets in place info. 
+Given a tourist location, generate a structured JSON object containing detailed and organized information about the location. The output must follow **exactly** the following format and field structure:
+
+{
+  title: string,
+  location: string,
+  mainImage: "/api/placeholder/800/800",
+  thingsToDo: [
+    { name: string, distance: string, time: string }
+  ],
+  nearbyAttractions: [
+    { name: string, image: "/api/placeholder/200/200" }
+  ],
+  proTip: string,
+  history: string,
+  placeInfo: {
+    entryFee: string,
+    openHours: string,
+    restrictions: string,
+    dressCode: string
+  }
+}
+
+Generate this JSON for the following tourist place: **${place}**
+
+Only output a valid JSON object — do not include any extra commentary.
+`;
+
+      try {
+        console.log(prompt)
+        console.log(apiKey)
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${apiKey}` // ⚠️ Replace with your key (safe only in dev)
+          },
+          body: JSON.stringify({
+            model: "llama3-70b-8192",
+            messages: [{ role: "user", content: prompt }],
+          }),
+        });
+
+        const data = await res.json();
+        console.log(data.choices[0]?.message?.content)
+        setResponse(data.choices[0]?.message?.content || "No response");
+        try {
+          const placeData = JSON.parse(data.choices[0]?.message?.content || '{}');
+          setPlaceData(placeData); // Set placeData as the parsed JSON
+        } catch (error) {
+          console.error("Error parsing response as JSON:", error);
+          setPlaceData(null); // If the content is not valid JSON, set placeData to null or default value
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setResponse("Error calling Groq: " + err.message);
+        } else {
+          setResponse("Unknown error occurred.");
+        }
+      }
+      setLoading(false);
+    };
+
+    callGroq();
+  }, [place]);
+
 
   const [homestays, setHomestays] = useState([]);
   const [isClient, setIsClient] = useState(false);
@@ -154,9 +242,13 @@ export default function BenitoFlexbox() {
     return <div className="h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  return (
+  if (loading) {
+    return <div>Loading...</div>; // You can replace this with a loader or spinner component
+  }
+
+  return placeData ? (
     <div className="max-w-7xl mx-auto p-4 md:p-6 bg-white">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">{tajMahalData.title}</h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">{placeData.title}</h1>
       
       {/* Benito Flexbox Layout */}
       <div className="flex flex-col gap-4 md:gap-6">
@@ -172,16 +264,16 @@ export default function BenitoFlexbox() {
     <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10"></div>
     <img
       src="/taj-mahal.webp"
-      alt={tajMahalData.title}
+      alt={placeData.title}
       className="w-full h-full object-cover"
     />
     <div className="absolute bottom-4 left-4 text-white z-20">
-      <h2 className="text-2xl font-bold">{tajMahalData.title}</h2>
+      <h2 className="text-2xl font-bold">{placeData.title}</h2>
       <p className="flex items-center">
         <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
         </svg>
-        {tajMahalData.location}
+        {placeData.location}
       </p>
     </div>
   </motion.div>
@@ -206,7 +298,7 @@ export default function BenitoFlexbox() {
       transition={{ delay: 0.2 }}
     >
       <h2 className="text-xl font-semibold mb-3">Pro Tip</h2>
-      <p className="italic text-gray-700">{tajMahalData.proTip}</p>
+      <p className="italic text-gray-700">{placeData.proTip}</p>
     </motion.div>
 
     {/* About This Place Card */}
@@ -226,17 +318,17 @@ export default function BenitoFlexbox() {
       <ul className="space-y-2">
         <li className="flex flex-col sm:flex-row">
           <span className="font-medium sm:w-1/3">Entry Fee:</span>
-          <span className="text-gray-700">{tajMahalData.placeInfo.entryFee}</span>
+          <span className="text-gray-700">{placeData.placeInfo.entryFee}</span>
         </li>
         <li className="flex flex-col sm:flex-row">
           <span className="font-medium sm:w-1/3">Open Hours:</span>
-          <span className="text-gray-700">{tajMahalData.placeInfo.openHours}</span>
+          <span className="text-gray-700">{placeData.placeInfo.openHours}</span>
         </li>
         <li className="flex flex-col sm:flex-row">
-          <span className="text-gray-700">{tajMahalData.placeInfo.restrictions}</span>
+          <span className="text-gray-700">{placeData.placeInfo.restrictions}</span>
         </li>
         <li className="flex flex-col sm:flex-row">
-          <span className="text-gray-700">{tajMahalData.placeInfo.dressCode}</span>
+          <span className="text-gray-700">{placeData.placeInfo.dressCode}</span>
         </li>
       </ul>
     </motion.div>
@@ -254,8 +346,8 @@ export default function BenitoFlexbox() {
       animate="visible"
       transition={{ delay: 0.6 }}
     >
-      <h2 className="text-xl font-semibold mb-3">History & Legacy</h2>
-      <p className="text-gray-700">{tajMahalData.history}</p>
+      <h2 className="text-xl font-semibold mb-3">Fun Facts</h2>
+      <p className="text-gray-700">{placeData.history}</p>
     </motion.div>
   </motion.div>
 </div>
@@ -333,7 +425,7 @@ export default function BenitoFlexbox() {
   >
     <h2 className="text-xl font-semibold mb-3">Nearby Attractions</h2>
     <div className="space-y-3">
-      {tajMahalData.thingsToDo.map((item, index) => (
+    {placeData.thingsToDo.map((item: ThingToDo, index: number) => (
         <div key={index} className="bg-white/70 rounded-lg p-3 flex items-center">
           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3">
             <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +443,7 @@ export default function BenitoFlexbox() {
       <div className="mt-4">
         <h3 className="font-medium text-lg mb-2">Other Places to Visit</h3>
         <div className="grid grid-cols-2 gap-2">
-          {tajMahalData.nearbyAttractions.slice(0, 4).map((attraction, index) => (
+        {placeData.nearbyAttractions.slice(0, 4).map((attraction: NearbyAttraction, index: number) => (
             <div key={index} className="flex items-center p-2 bg-white/50 rounded-lg">
               <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
               <span className="text-sm">{attraction.name}</span>
@@ -366,5 +458,5 @@ export default function BenitoFlexbox() {
         
       </div>
     </div>
-  );
+  ) :  (<div>Loading...</div>) ; 
 }
