@@ -2,13 +2,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, MapPin, Star, Calendar, Compass, Users, Coffee, Leaf, HandHeart, ShoppingBag } from 'lucide-react';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 // Types for our data
 type City = 'Goa' | 'Kerala' | 'Himachal' | 'Uttarakhand' | 'Rajasthan' | 'All';
-type Category = 'New Attractions' | 'Reviews' | 'Hidden Gems' | 'Exclusive Tours' | 'Local Experiences';
+type Category = 'New Attractions' | 'Hidden Gems' | 'Exclusive Tours' | 'Local Experiences';
 
 interface Post {
-  id: string;
+  id: string; 
   title: string;
   description: string;
   imageUrl: string;
@@ -224,37 +226,69 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: currentTheme.primary }}>
-      {/* Hero Section with Title */}
+    <>
+
+      {/* Background Image
+      Hero Section with Title
       <motion.div 
-        className="relative h-64 flex items-center justify-center overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+      className="relative h-64 flex items-center justify-center overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
       >
-        <div className="absolute inset-0" style={{ 
-          background: `linear-gradient(to right, ${currentTheme.secondary}, ${currentTheme.tertiary})`,
-          opacity: 0.8 
+      <div className="absolute inset-0" style={{ 
+        background: `linear-gradient(to right, ${currentTheme.secondary}, ${currentTheme.tertiary})`,
+        opacity: 0.8 
         }}></div>
         <div className="relative z-10 text-center px-4">
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold text-white mb-2"
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            Community Discoveries
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-white max-w-2xl mx-auto"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            Explore local experiences and sustainable travel across India
-          </motion.p>
+        <motion.h1 
+        className="text-4xl md:text-5xl font-bold text-white mb-2"
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        >
+        Community Discoveries
+        </motion.h1>
+        <motion.p 
+        className="text-xl text-white max-w-2xl mx-auto"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        >
+        Explore local experiences and sustainable travel across India
+        </motion.p>
         </div>
-      </motion.div>
+        </motion.div> */}
+
+<div className="min-h-screen pt-20" style={{ backgroundColor: currentTheme.primary }}>
+  {/* Simple Header with Title */}
+  <Header /> {/* Header Component */}
+
+  <motion.div 
+    className="py-12 text-center"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.8 }}
+  >
+    <motion.h1 
+      className="text-4xl md:text-5xl font-bold mb-3"
+      initial={{ y: -20 }}
+      animate={{ y: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+      style={{ color: currentTheme.secondary }}
+    >
+      Community Discoveries
+    </motion.h1>
+    <motion.p 
+      className="text-xl max-w-2xl mx-auto"
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.4, duration: 0.5 }}
+      style={{ color: currentTheme.tertiary }}
+    >
+      Explore local experiences and sustainable travel across India
+    </motion.p>
+  </motion.div>
 
       {/* Filter Section */}
       <div className="container mx-auto px-4 py-8">
@@ -270,7 +304,7 @@ export default function CommunityPage() {
                   id="city-select"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value as City)}
-                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md border-2"
                 >
                   <option value="All">All Destinations</option>
                   <option value="Goa">Goa</option>
@@ -295,11 +329,11 @@ export default function CommunityPage() {
                   id="category-select"
                   value={selectedCategory || ''}
                   onChange={(e) => setSelectedCategory(e.target.value as Category || null)}
-                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md border-2"
                 >
                   <option value="">All Categories</option>
                   <option value="New Attractions">New Attractions</option>
-                  <option value="Reviews">Reviews</option>
+                  {/* <option value="Reviews">Reviews</option> */}
                   <option value="Hidden Gems">Hidden Gems</option>
                   <option value="Exclusive Tours">Exclusive Tours</option>
                   <option value="Local Experiences">Local Experiences</option>
@@ -605,6 +639,8 @@ export default function CommunityPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
+    </>
   );
 }
