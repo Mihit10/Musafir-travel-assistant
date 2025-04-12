@@ -1,253 +1,250 @@
-"use client"; // Correct directive to mark the component as client-side
+"use client"; // This marks the component as a client component in Next.js
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { toast } from "react-toastify"; // For toast notifications
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from 'react';
+import { ChevronDown, ChevronUp, Phone, Mail, MessageSquare, MapPin } from 'lucide-react';
 
-const API_URL = "http://localhost:3005/guides"; // Your backend API
+interface Guide {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: string;
+  adhar_card: string;
+  years_of_experience: number;
+  age: number;
+  ratings: string;
+  language: string;
+  city: string;
+  places: string[];
+}
 
-const GuidesPage = () => {
-  const [guides, setGuides] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone_number: "", // Update here to match backend field
-    adhar_card: "",
-    years_of_experience: 0,
-    age: 0,
-    ratings: 0,
-    language: "",
-    city: "",
-    places: [],
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editGuideId, setEditGuideId] = useState(null);
-
-  // Fetch guides on component mount
+export default function LocalGuidesPage() {
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [guides, setGuides] = useState<Guide[]>([]);
+  const [allGuides, setAllGuides] = useState<Guide[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [expandedGuide, setExpandedGuide] = useState<number | null>(null);
+  
+  // Hardcoded guide data for Indian states
+  const guidesData: Guide[] = [
+    {
+      id: 1,
+      name: "Raj Sharma",
+      email: "raj.sharma@example.com",
+      phone_number: "9876543210",
+      adhar_card: "1234-5678-9101",
+      years_of_experience: 7,
+      age: 32,
+      ratings: "4.8",
+      language: "Hindi, English",
+      city: "Goa",
+      places: ["Calangute Beach", "Fort Aguada", "Dudhsagar Falls"]
+    },
+    {
+      id: 2,
+      name: "Priya Nair",
+      email: "priya.nair@example.com",
+      phone_number: "8765432109",
+      adhar_card: "2345-6789-0123",
+      years_of_experience: 5,
+      age: 29,
+      ratings: "4.6",
+      language: "Malayalam, English, Hindi",
+      city: "Kerala",
+      places: ["Munnar", "Alleppey Backwaters", "Kovalam Beach"]
+    },
+    {
+      id: 3,
+      name: "Vikram Singh",
+      email: "vikram.singh@example.com",
+      phone_number: "7654321098",
+      adhar_card: "3456-7890-1234",
+      years_of_experience: 9,
+      age: 35,
+      ratings: "4.9",
+      language: "Hindi, English, Pahari",
+      city: "Himachal",
+      places: ["Shimla", "Manali", "Dharamshala"]
+    },
+    {
+      id: 4,
+      name: "Ananya Joshi",
+      email: "ananya.joshi@example.com",
+      phone_number: "6543210987",
+      adhar_card: "4567-8901-2345",
+      years_of_experience: 4,
+      age: 27,
+      ratings: "4.5",
+      language: "Hindi, English, Garhwali",
+      city: "Uttarakhand",
+      places: ["Rishikesh", "Nainital", "Valley of Flowers"]
+    },
+    {
+      id: 5,
+      name: "Arjun Mehra",
+      email: "arjun.mehra@example.com",
+      phone_number: "5432109876",
+      adhar_card: "5678-9012-3456",
+      years_of_experience: 8,
+      age: 33,
+      ratings: "4.7",
+      language: "Hindi, English, Rajasthani",
+      city: "Rajasthan",
+      places: ["Jaipur", "Udaipur", "Jaisalmer"]
+    }
+  ];
+  
+  // Cities as required
+  const cities = ['Goa', 'Kerala', 'Himachal', 'Uttarakhand', 'Rajasthan'];
+  
+  // Load data on component mount
   useEffect(() => {
-    const fetchGuides = async () => {
-      try {
-        const response = await axios.get(API_URL);
-        setGuides(response.data);
-      } catch (error) {
-        toast.error("Failed to load guides");
-      }
-    };
-
-    fetchGuides();
+    setLoading(true);
+    // Use the hardcoded data instead of fetching
+    setAllGuides(guidesData);
+    setLoading(false);
   }, []);
-
-  // Handle form changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle form submission for creating and editing guides
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (isEditing) {
-      try {
-        await axios.put(`${API_URL}/${editGuideId}`, formData);
-        toast.success("Guide updated successfully!");
-        setIsEditing(false);
-      } catch (error) {
-        toast.error("Failed to update guide");
-      }
+  
+  // Filter guides when city selection changes
+  useEffect(() => {
+    if (selectedCity && allGuides.length > 0) {
+      const filteredGuides = allGuides.filter(guide => guide.city === selectedCity);
+      setGuides(filteredGuides);
     } else {
-      try {
-        await axios.post(API_URL, formData);
-        toast.success("Guide created successfully!");
-      } catch (error) {
-        toast.error("Failed to create guide");
-      }
+      setGuides([]);
     }
-
-    // Clear form
-    setFormData({
-      name: "",
-      email: "",
-      phone_number: "", // Ensure this is cleared properly
-      adhar_card: "",
-      years_of_experience: 0,
-      age: 0,
-      ratings: 0,
-      language: "",
-      city: "",
-      places: [],
-    });
-
-    // Reload guides
-    const response = await axios.get(API_URL);
-    setGuides(response.data);
-  };
-
-  // Handle editing
-  const handleEdit = (guide: any) => {
-    setFormData(guide);
-    setIsEditing(true);
-    setEditGuideId(guide.id);
-  };
-
-  // Handle deleting
-  const handleDelete = async (id: number) => {
-    try {
-      await axios.delete(`${API_URL}/${id}`);
-      toast.success("Guide deleted successfully!");
-      const response = await axios.get(API_URL);
-      setGuides(response.data);
-    } catch (error) {
-      toast.error("Failed to delete guide");
+  }, [selectedCity, allGuides]);
+  
+  const toggleExpand = (guideId: number) => {
+    if (expandedGuide === guideId) {
+      setExpandedGuide(null);
+    } else {
+      setExpandedGuide(guideId);
     }
   };
-
+  
+  const generateWhatsAppLink = (phoneNumber: string, city: string): string => {
+    const message = `Hi, I am visiting ${city} and would like to enquire more.`;
+    return `https://wa.me/${phoneNumber.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+  };
+  
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        {isEditing ? "Edit Guide" : "Create New Guide"}
-      </h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Label>Name</Label>
-            <Input
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              placeholder="Enter name"
-              required
-            />
-          </div>
-          <div>
-            <Label>Email</Label>
-            <Input
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter email"
-              required
-            />
-          </div>
-          <div>
-            <Label>Phone Number</Label>
-            <Input
-              name="phone_number" // Update name here as well
-              value={formData.phone_number} // Ensure state field matches
-              onChange={handleInputChange}
-              placeholder="Enter phone number"
-              required
-            />
-          </div>
-          <div>
-            <Label>Adhar Card</Label>
-            <Input
-              name="adhar_card"
-              value={formData.adhar_card}
-              onChange={handleInputChange}
-              placeholder="Enter Adhar card number"
-              required
-            />
-          </div>
-          <div>
-            <Label>Years of Experience</Label>
-            <Input
-              name="years_of_experience"
-              type="number"
-              value={formData.years_of_experience}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>Age</Label>
-            <Input
-              name="age"
-              type="number"
-              value={formData.age}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>Ratings</Label>
-            <Input
-              name="ratings"
-              type="number"
-              value={formData.ratings}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>Language</Label>
-            <Input
-              name="language"
-              value={formData.language}
-              onChange={handleInputChange}
-              placeholder="Enter language"
-              required
-            />
-          </div>
-          <div>
-            <Label>City</Label>
-            <Input
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              placeholder="Enter city"
-              required
-            />
-          </div>
-        </div>
-        <div className="flex justify-end space-x-4">
-          <Button type="submit">
-            {isEditing ? "Update Guide" : "Create Guide"}
-          </Button>
-        </div>
-      </form>
-
-      <h2 className="text-xl font-semibold mt-8">Guides List</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-        {guides.map((guide: any) => (
-          <Card key={guide.id} className="shadow-lg">
-            <CardHeader>
-              <CardTitle>{guide.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Email: {guide.email}</p>
-              <p>Phone: {guide.phone_number}</p>{" "}
-              {/* Use the correct field name here */}
-              <p>City: {guide.city}</p>
-              <p>Languages: {guide.language}</p>
-              <p>Years of Experience: {guide.years_of_experience}</p>
-            </CardContent>
-            <div className="flex justify-between items-center p-2">
-              <Button
-                onClick={() => handleEdit(guide)}
-                className="bg-blue-500 text-white"
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => handleDelete(guide.id)}
-                className="bg-red-500 text-white"
-              >
-                Delete
-              </Button>
-            </div>
-          </Card>
-        ))}
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-center mb-8">Local Travel Guides</h1>
+      
+      <div className="mb-8">
+        <label htmlFor="city-select" className="block text-lg font-medium mb-2">
+          Select a State
+        </label>
+        <select
+          id="city-select"
+          value={selectedCity}
+          onChange={(e) => setSelectedCity(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="">-- Select a state --</option>
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
       </div>
+      
+      {loading ? (
+        <div className="flex justify-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {guides.length > 0 ? (
+            guides.map((guide) => (
+              <div 
+                key={guide.id} 
+                className="border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 flex flex-col"
+              >
+                {/* Square Image Placeholder */}
+                <div className="w-full  h-40 relative bg-gray-200">
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                    <div className="flex flex-col items-center">
+                      <MapPin className="h-12 w-12 mb-2" />
+                      <span className="text-sm">Guide Photo</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div 
+                  className="bg-white p-4 flex justify-between items-center cursor-pointer"
+                  onClick={() => toggleExpand(guide.id)}
+                >
+                  <div>
+                    <h2 className="text-xl font-semibold">{guide.name}</h2>
+                    <div className="mt-1">
+                      <p className="text-sm text-gray-600">Guides in:</p>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {guide.places.map((place, idx) => (
+                          <span 
+                            key={idx} 
+                            className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
+                          >
+                            {place}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {expandedGuide === guide.id ? (
+                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  )}
+                </div>
+                
+                {expandedGuide === guide.id && (
+                  <div className="bg-gray-50 p-4 border-t border-gray-200 animate-fadeIn">
+                    <div className="grid grid-cols-1 gap-2">
+                      <p className="text-sm text-gray-600">Age: <span className="font-medium text-gray-900">{guide.age}</span></p>
+                      <p className="text-sm text-gray-600">Aadhaar: <span className="font-medium text-gray-900">{guide.adhar_card}</span></p>
+                      <p className="text-sm text-gray-600">Experience: <span className="font-medium text-gray-900">{guide.years_of_experience} years</span></p>
+                      <p className="text-sm text-gray-600">Rating: <span className="font-medium text-gray-900">{guide.ratings} ⭐</span></p>
+                      <p className="text-sm text-gray-600">Languages: <span className="font-medium text-gray-900">{guide.language}</span></p>
+                    </div>
+                    
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <a 
+                        href={`tel:${guide.phone_number}`}
+                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        <Phone className="h-4 w-4 mr-2" />
+                        Call
+                      </a>
+                      <a 
+                        href={`mailto:${guide.email}`}
+                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Email
+                      </a>
+                      <a 
+                        href={generateWhatsAppLink(guide.phone_number, selectedCity)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : selectedCity ? (
+            <div className="col-span-full text-center py-8 text-gray-500">
+              No guides found for {selectedCity}
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
-};
-
-export default GuidesPage;
+}
