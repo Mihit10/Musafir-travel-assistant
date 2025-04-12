@@ -29,12 +29,18 @@ const ShopsPage = () => {
   const [editingId, setEditingId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const API_URL = "http://localhost:3005/vendors";
+  const API_URL = "https://rhino-frank-tightly.ngrok-free.app/vendors";
 
   // Fetch all vendors
   const fetchVendors = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(API_URL, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
       setVendors(response.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
