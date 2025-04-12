@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const GuideService = require("./services/guideService");
 const VendorService = require("./services/vendorService");
+const HomestayService = require("./services/homestayService");
 require("dotenv").config();
 
 const app = express();
@@ -122,6 +123,64 @@ app.delete("/vendors/:id", async (req, res) => {
   } catch (err) {
     console.error(
       `Error deleting vendor with ID ${req.params.id}:`,
+      err.message
+    );
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Homestay Routes
+app.post("/homestays", async (req, res) => {
+  try {
+    console.log("Creating homestay...");
+    const homestay = await HomestayService.createHomestay(req.body);
+    res.status(201).json(homestay);
+    console.log("Homestay created:", homestay);
+  } catch (err) {
+    console.error("Error creating homestay:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/homestays", async (req, res) => {
+  try {
+    console.log("Fetching all homestays...");
+    const homestays = await HomestayService.getHomestays();
+    res.json(homestays);
+    console.log("Fetched homestays:", homestays);
+  } catch (err) {
+    console.error("Error fetching homestays:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/homestays/:id", async (req, res) => {
+  try {
+    console.log(`Updating homestay with ID: ${req.params.id}`);
+    const homestay = await HomestayService.updateHomestay(
+      req.params.id,
+      req.body
+    );
+    res.json(homestay);
+    console.log("Homestay updated:", homestay);
+  } catch (err) {
+    console.error(
+      `Error updating homestay with ID ${req.params.id}:`,
+      err.message
+    );
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/homestays/:id", async (req, res) => {
+  try {
+    console.log(`Deleting homestay with ID: ${req.params.id}`);
+    const homestay = await HomestayService.deleteHomestay(req.params.id);
+    res.json(homestay);
+    console.log("Homestay deleted:", homestay);
+  } catch (err) {
+    console.error(
+      `Error deleting homestay with ID ${req.params.id}:`,
       err.message
     );
     res.status(500).json({ error: err.message });
