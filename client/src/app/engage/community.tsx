@@ -433,7 +433,7 @@ if (!isValidState(selectedState)) {
       {parallaxImages.length >= 3 && (
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-6 text-[#664343]">Visual Exploration</h2>
-          <ParallaxScroll images={parallaxImages} />
+          {/* <ParallaxScroll images={parallaxImages} /> */}
         </div>
       )}
 
