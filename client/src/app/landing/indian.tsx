@@ -2,12 +2,12 @@
 import { useRef, useState, useEffect } from 'react';
 
 const IndiaMandala = () => {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  
   // Custom hook for scroll detection
   useEffect(() => {
     const handleScroll = () => {
@@ -37,26 +37,29 @@ const IndiaMandala = () => {
   }, []);
 
   // Calculate movement based on scroll position
-  const calculateMovement = (baseDistance, direction) => {
+  const calculateMovement = (baseDistance: number, direction: number) => {
     const moveAmount = Math.min(baseDistance * (scrollPosition / 1000), baseDistance);
     return moveAmount * direction;
   };
+  
 
   return (
     <div 
       ref={sectionRef}
-      className="mandala-section"
+      className="mandala-section w-full h-full absolute"
     >
-      <div className="mandala-container">
+      <div className="mandala-container w-full h-full">
         <div className={`mandala-wrapper ${isVisible ? 'visible' : ''}`}>
           {/* Mandala Background Circle */}
-          <div className="mandala-circle">
-            <img 
-              src="/lovable-uploads/9651e3c1-aa2d-4410-a418-bb7952cd6176.png" 
-              alt="Mandala Design" 
-              className="mandala-img"
-            />
-          </div>
+          <div className="flex items-center justify-center w-full h-full overflow-hidden">
+  <img 
+    src="/mand.png" 
+    alt="Mandala Design" 
+    className="scale-[1.5] object-cover"
+  />
+</div>
+
+
           
           {/* Gateway of India at bottom */}
           <div 
@@ -114,10 +117,14 @@ const IndiaMandala = () => {
               transform: `translateY(${calculateMovement(100, -1)}px)`
             }}
           >
-            <div className="component-circle">
-              <span>1</span>
-            </div>
-          </div>
+             <div className="component-image-container">
+    <img 
+      src="/p2.gif" 
+      alt="Mandala Design"
+      className="component-image"
+    />
+  </div>
+</div>
           
           {/* Component 2 - Top Right */}
           <div 
@@ -126,10 +133,14 @@ const IndiaMandala = () => {
               transform: `translate(${calculateMovement(70, 1)}px, ${calculateMovement(70, -1)}px)`
             }}
           >
-            <div className="component-circle">
-              <span>2</span>
-            </div>
-          </div>
+           <div className="component-image-container">
+    <img 
+      src="/p1.gif" 
+      alt="Mandala Design"
+      className="component-image"
+    />
+  </div>
+</div>
           
           {/* Component 3 - Right */}
           <div 
@@ -138,10 +149,14 @@ const IndiaMandala = () => {
               transform: `translateX(${calculateMovement(100, 1)}px)`
             }}
           >
-            <div className="component-circle">
-              <span>3</span>
-            </div>
-          </div>
+            <div className="component-image-container">
+    <img 
+      src="/e1.gif" 
+      alt="Mandala Design"
+      className="component-image"
+    />
+  </div>
+</div>
           
           {/* Component 4 - Bottom Right */}
           <div 
@@ -150,34 +165,14 @@ const IndiaMandala = () => {
               transform: `translate(${calculateMovement(70, 1)}px, ${calculateMovement(70, 1)}px)`
             }}
           >
-            <div className="component-circle">
-              <span>4</span>
-            </div>
-          </div>
-          
-          {/* Component 5 - Bottom Left */}
-          <div 
-            className={`mandala-component component-bottom-left ${isVisible ? 'visible' : ''}`}
-            style={{
-              transform: `translate(${calculateMovement(70, -1)}px, ${calculateMovement(70, 1)}px)`
-            }}
-          >
-            <div className="component-circle">
-              <span>5</span>
-            </div>
-          </div>
-          
-          {/* Component 6 - Left */}
-          <div 
-            className={`mandala-component component-left ${isVisible ? 'visible' : ''}`}
-            style={{
-              transform: `translateX(${calculateMovement(100, -1)}px)`
-            }}
-          >
-            <div className="component-circle">
-              <span>6</span>
-            </div>
-          </div>
+            <div className="component-image-container">
+    <img 
+      src="/ele2.gif" 
+      alt="Mandala Design"
+      className="component-image"
+    />
+  </div>
+</div>
           
           {/* Component 7 - Top Left */}
           <div 
@@ -186,9 +181,13 @@ const IndiaMandala = () => {
               transform: `translate(${calculateMovement(70, -1)}px, ${calculateMovement(70, -1)}px)`
             }}
           >
-            <div className="component-circle">
-              <span>7</span>
-            </div>
+            <div className="component-image-container">
+    <img 
+      src="/fort.png" 
+      alt="Mandala Design"
+      className="component-image"
+    />
+  </div>
           </div>
         </div>
       </div>
@@ -204,7 +203,7 @@ const IndiaMandala = () => {
         }
         
         .mandala-container {
-          position: fixed;
+          position: absolute;
           inset: 0;
           display: flex;
           align-items: center;
@@ -248,7 +247,7 @@ const IndiaMandala = () => {
         .mandala-img {
           width: 100%;
           height: 100%;
-          object-fit: contain;
+          object-fit: cover;
         }
         
         .mandala-gateway {

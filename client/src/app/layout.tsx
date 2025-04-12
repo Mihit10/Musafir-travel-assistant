@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
       >
-        <GoogleTranslate /> {/* ✅ Now safely used on client */}
+        {/* <GoogleTranslate /> ✅ Now safely used on client */}
 
         {children}
       </body>
