@@ -1,606 +1,610 @@
-// pages/community.tsx
 "use client";
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { HeartIcon, GlobeIcon, HomeIcon, ClockIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, MapPin, Star, Calendar, Compass, Users, Coffee, Leaf, HandHeart, ShoppingBag } from 'lucide-react';
 
-// Types
-type StateType = 'Goa' | 'Kerala' | 'Himachal' | 'Uttarakhand' | 'Rajasthan';
-type CategoryType = 'all' | 'attractions' | 'reviews' | 'gems' | 'tours';
+// Types for our data
+type City = 'Goa' | 'Kerala' | 'Himachal' | 'Uttarakhand' | 'Rajasthan' | 'All';
+type Category = 'New Attractions' | 'Reviews' | 'Hidden Gems' | 'Exclusive Tours' | 'Local Experiences';
 
-interface Category {
-  id: CategoryType;
-  name: string;
-}
-
-interface Tag {
+interface Post {
   id: string;
-  name: string;
-}
-
-interface DiscoveryItem {
-  id: string;
-  type: CategoryType;
   title: string;
   description: string;
-  imageSrc: string; 
+  imageUrl: string;
+  city: City;
+  category: Category;
   tags: string[];
-}
-
-interface StateData {
-  [key: string]: DiscoveryItem[];
-}
-
-// Component for the state dropdown
-const StateDropdown = ({ 
-  selected, 
-  states, 
-  onChange 
-}: { 
-  selected: StateType; 
-  states: StateType[]; 
-  onChange: (state: StateType) => void;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="relative z-20 w-full md:w-64">
-      <button 
-        className="bg-white shadow-md rounded-lg px-6 py-3 text-lg font-medium flex items-center justify-between w-full"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span>{selected}</span>
-        <svg className={`w-5 h-5 ml-2 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </button>
-      {isOpen && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="absolute w-full bg-white shadow-lg rounded-lg mt-1 py-2 z-30"
-        >
-          {states.map(state => (
-            <button 
-              key={state}
-              className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
-              onClick={() => {
-                onChange(state);
-                setIsOpen(false);
-              }}
-            >
-              {state}
-            </button>
-          ))}
-        </motion.div>
-      )}
-    </div>
-  );
-};
-
-// Component for category filter tags
-const CategoryTags = ({ 
-  categories, 
-  selected, 
-  onChange 
-}: { 
-  categories: Category[]; 
-  selected: CategoryType; 
-  onChange: (category: CategoryType) => void;
-}) => {
-  return (
-    <div className="flex flex-wrap justify-center md:justify-end gap-2">
-      {categories.map(category => (
-        <button
-          key={category.id}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-            selected === category.id
-              ? 'bg-teal-600 text-white'
-              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-          }`}
-          onClick={() => onChange(category.id)}
-        >
-          {category.name}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-// Discovery card component
-const DiscoveryCard = ({ 
-  item, 
-  isFavorite, 
-  onToggleFavorite 
-}: { 
-  item: DiscoveryItem; 
+  rating: number;
+  date: string;
   isFavorite: boolean;
-  onToggleFavorite: () => void;
-}) => {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-md overflow-hidden"
-    >
-      <div className="relative h-48 overflow-hidden">
-        <Image 
-          src={item.imageSrc} 
-          alt={item.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 hover:scale-105"
-        />
-      </div>
-      <div className="p-6">
-        <div className="flex justify-between items-start">
-          <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-          <button 
-            onClick={onToggleFavorite}
-            className="focus:outline-none"
-            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          >
-            <HeartIcon 
-              className={`w-6 h-6 transition-all duration-300 ${
-                isFavorite ? 'fill-red-500 text-red-500 scale-110' : 'text-gray-400'
-              }`}
-            />
-          </button>
-        </div>
-        <p className="text-gray-600 mb-4">{item.description}</p>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {item.tags.map(tag => (
-            <span key={tag} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
+}
+
+// City-specific theme colors
+const cityThemes = {
+  'Goa': {
+    primary: '#DFF6F5',     // Soft aqua – ocean breeze
+    secondary: '#26A69A',   // Teal – coconut trees & water sports
+    tertiary: '#FF7043'     // Warm orange – sunset party energy
+  },
+  'Kerala': {
+    primary: '#E7F4EC',     // Backwater mist green
+    secondary: '#4CAF50',   // Kerala green – forests & farms
+    tertiary: '#1976D2'     // Backwater blue – clean and cool
+  },
+  'Himachal': {
+    primary: '#E3F2FD',     // Clear mountain sky
+    secondary: '#6D4C41',   // Forest brown – wood & hills  
+    tertiary: '#3F51B5'     // Crisp blue – cool elevation
+  },
+  'Uttarakhand': {
+    primary: '#F3E5F5',     // Lavender – peaceful/spiritual
+    secondary: '#4CAF50',   // Forest green – Himalayan range
+    tertiary: '#1E88E5'     // Glacier river blue
+  },
+  'Rajasthan': {
+    primary: '#FFF3E0',     // Desert sand cream
+    secondary: '#D84315',   // Fort terracotta
+    tertiary: '#C2185B'     // Bold pink – traditional textiles
+  },
+  'All': {
+    primary: '#F5F7FA',     // Neutral light background
+    secondary: '#26A69A',   // Teal as default accent
+    tertiary: '#3F51B5'     // Blue as default secondary
+  }
 };
 
-// SustainabilityFeature component
-const SustainabilityFeature = ({
-  icon: Icon,
-  title,
-  description,
-  bgColor,
-  iconColor,
-}: {
-  icon: any;
-  title: string;
-  description: string;
-  bgColor: string;
-  iconColor: string;
-}) => {
-  return (
-    <div className={`${bgColor} rounded-xl p-6 shadow-sm`}>
-      <div className={`${iconColor} mb-4`}>
-        <Icon className="w-12 h-12" />
-      </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-700">{description}</p>
-    </div>
-  );
-};
-
-// Main community page component
 export default function CommunityPage() {
-  const [selectedState, setSelectedState] = useState<StateType>('Goa');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
-  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedCity, setSelectedCity] = useState<City>('All');
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   
-  const states: StateType[] = ['Goa', 'Kerala', 'Himachal', 'Uttarakhand', 'Rajasthan'];
-  
-  const categories: Category[] = [
-    { id: 'all', name: 'All Updates' },
-    { id: 'attractions', name: 'New Attractions' },
-    { id: 'reviews', name: 'Recent Reviews' },
-    { id: 'gems', name: 'Hidden Gems' },
-    { id: 'tours', name: 'Exclusive Tours' }
-  ];
-  
-  // Mock data for community discoveries
-  const stateData: StateData = {
-    'Goa': [
-      {
-        id: 'goa1',
-        type: 'attractions',
-        title: 'Butterfly Conservatory of Goa',
-        description: 'A newly expanded sanctuary home to over 100 butterfly species',
-        imageSrc: '/images/goa-butterfly.jpg',
-        tags: ['eco-friendly', 'family', 'nature']
-      },
-      {
-        id: 'goa2',
-        type: 'gems',
-        title: 'Secret Beach Trail in Arambol',
-        description: 'Local fishermen reveal hidden coastal path with breathtaking views',
-        imageSrc: '/images/goa-beach-trail.jpg',
-        tags: ['adventure', 'local-experience', 'beach']
-      },
-      {
-        id: 'goa3',
-        type: 'tours',
-        title: 'Spice Farm Lunch with Local Family',
-        description: 'Experience authentic Goan cuisine prepared with freshly harvested spices',
-        imageSrc: '/images/goa-spice-farm.jpg',
-        tags: ['food', 'cultural', 'local-experience']
-      },
-      {
-        id: 'goa4',
-        type: 'reviews',
-        title: 'Divar Island Cycling Tour',
-        description: 'Visitors rave about this sustainable tour through peaceful villages',
-        imageSrc: '/images/goa-cycling.jpg',
-        tags: ['eco-friendly', 'adventure', 'rural']
-      }
-    ],
-    'Kerala': [
-      {
-        id: 'kerala1',
-        type: 'attractions',
-        title: 'Jatayu Earth Center',
-        description: 'Adventure park with world\'s largest bird sculpture and sustainability focus',
-        imageSrc: '/images/kerala-jatayu.jpg',
-        tags: ['eco-friendly', 'adventure', 'cultural']
-      },
-      {
-        id: 'kerala2',
-        type: 'gems',
-        title: 'Kumarakom Bird Sanctuary',
-        description: 'Recently expanded trails showcase rare migratory birds',
-        imageSrc: '/images/kerala-birds.jpg',
-        tags: ['eco-friendly', 'nature', 'photography']
-      },
-      {
-        id: 'kerala3',
-        type: 'tours',
-        title: 'Traditional Fishing with Locals',
-        description: 'Learn ancient fishing techniques and enjoy fresh catch for lunch',
-        imageSrc: '/images/kerala-fishing.jpg',
-        tags: ['cultural', 'food', 'local-experience']
-      },
-      {
-        id: 'kerala4',
-        type: 'reviews',
-        title: 'Munnar Tea Estate Stay',
-        description: 'Sustainable accommodations among the rolling hills of tea plantations',
-        imageSrc: '/images/kerala-tea.jpg',
-        tags: ['eco-friendly', 'luxury', 'rural']
-      }
-    ],
-    'Himachal': [
-      {
-        id: 'himachal1',
-        type: 'attractions',
-        title: 'Himalayan Bird Park',
-        description: 'Conservation center featuring rare Himalayan bird species',
-        imageSrc: '/images/himachal-birds.jpg',
-        tags: ['eco-friendly', 'nature', 'family']
-      },
-      {
-        id: 'himachal2',
-        type: 'gems',
-        title: 'Malana Ancient Village',
-        description: 'Preserved cultural heritage site with unique architecture',
-        imageSrc: '/images/himachal-malana.jpg',
-        tags: ['cultural', 'photography', 'heritage']
-      },
-      {
-        id: 'himachal3',
-        type: 'tours',
-        title: 'Apple Harvest Experience',
-        description: 'Join local farmers to pick and process apples during harvest season',
-        imageSrc: '/images/himachal-apples.jpg',
-        tags: ['food', 'local-experience', 'rural']
-      },
-      {
-        id: 'himachal4',
-        type: 'reviews',
-        title: 'Kalka-Shimla Railway Journey',
-        description: 'UNESCO heritage train ride through stunning mountain landscapes',
-        imageSrc: '/images/himachal-train.jpg',
-        tags: ['heritage', 'scenic', 'train-journey']
-      }
-    ],
-    'Uttarakhand': [
-      {
-        id: 'uttarakhand1',
-        type: 'attractions',
-        title: 'Valley of Flowers Extension',
-        description: 'Newly accessible areas of this UNESCO World Heritage site',
-        imageSrc: '/images/uttarakhand-flowers.jpg',
-        tags: ['eco-friendly', 'nature', 'trekking']
-      },
-      {
-        id: 'uttarakhand2',
-        type: 'gems',
-        title: 'Mukteshwar Sunrise Point',
-        description: 'Lesser-known viewpoint with panoramic Himalayan vistas',
-        imageSrc: '/images/uttarakhand-sunrise.jpg',
-        tags: ['scenic', 'photography', 'peaceful']
-      },
-      {
-        id: 'uttarakhand3',
-        type: 'tours',
-        title: 'Traditional Craft Workshops',
-        description: 'Learn wool weaving and woodcarving from local artisans',
-        imageSrc: '/images/uttarakhand-crafts.jpg',
-        tags: ['cultural', 'handicrafts', 'local-experience']
-      },
-      {
-        id: 'uttarakhand4',
-        type: 'reviews',
-        title: 'Binsar Wildlife Sanctuary Stay',
-        description: 'Eco-lodges with minimal environmental impact and maximum views',
-        imageSrc: '/images/uttarakhand-binsar.jpg',
-        tags: ['eco-friendly', 'wildlife', 'luxury']
-      }
-    ],
-    'Rajasthan': [
-      {
-        id: 'rajasthan1',
-        type: 'attractions',
-        title: 'Jaisalmer Desert National Park',
-        description: 'Newly designated conservation area with desert wildlife tours',
-        imageSrc: '/images/rajasthan-desert.jpg',
-        tags: ['wildlife', 'eco-friendly', 'adventure']
-      },
-      {
-        id: 'rajasthan2',
-        type: 'gems',
-        title: 'Shekhawati Haveli Circuit',
-        description: 'Restored mansions showcasing incredible frescos and architecture',
-        imageSrc: '/images/rajasthan-haveli.jpg',
-        tags: ['heritage', 'art', 'photography']
-      },
-      {
-        id: 'rajasthan3',
-        type: 'tours',
-        title: 'Bishnoi Village Safari',
-        description: 'Visit communities known for their ecological conservation traditions',
-        imageSrc: '/images/rajasthan-bishnoi.jpg',
-        tags: ['eco-friendly', 'cultural', 'local-experience']
-      },
-      {
-        id: 'rajasthan4',
-        type: 'reviews',
-        title: 'Palace on Wheels Experience',
-        description: 'Luxury train journey through rural Rajasthan with local interactions',
-        imageSrc: '/images/rajasthan-train.jpg',
-        tags: ['luxury', 'train-journey', 'heritage']
-      }
-    ]
-  };
-  
-  const toggleFavorite = (id: string) => {
-    setFavorites(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-    
-    // Optional: Save to localStorage or sync with API
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('communityFavorites', JSON.stringify({
-        ...favorites,
-        [id]: !favorites[id]
-      }));
-    }
-  };
-  
-  // Filter discoveries based on selected category
-  const filteredData = stateData[selectedState]?.filter(item => 
-    selectedCategory === 'all' || item.type === selectedCategory
-  ) || [];
+  // Get current theme colors based on selected city
+  const currentTheme = cityThemes[selectedCity];
 
-  // Load favorites from localStorage on initial render
+  // Tags for filtering
+  const availableTags = [
+    { name: 'Eco-Friendly', icon: <Leaf className="w-4 h-4" /> },
+    { name: 'Train Journeys', icon: <ShoppingBag className="w-4 h-4" /> },
+    { name: 'Local Food', icon: <Coffee className="w-4 h-4" /> },
+    { name: 'Meet Locals', icon: <Users className="w-4 h-4" /> },
+    { name: 'Adventure', icon: <Compass className="w-4 h-4" /> },
+  ];
+
+  // Sample data - in a real app, this would come from an API
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedFavorites = localStorage.getItem('communityFavorites');
-      if (savedFavorites) {
-        setFavorites(JSON.parse(savedFavorites));
-      }
-    }
-    
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    
-    return () => clearTimeout(timer);
+    // Simulating API call
+    const fetchPosts = async () => {
+      // Mock data
+      const mockPosts: Post[] = [
+        {
+          id: '1',
+          title: 'Newly Opened Butterfly Sanctuary',
+          description: 'Experience the wonder of hundreds of butterfly species in this eco-friendly sanctuary operated by local communities.',
+          imageUrl: 'https://inditales.com/wp-content/uploads/2014/05/butterfly-conservatory-direction-board.jpg',
+          city: 'Goa',
+          category: 'New Attractions',
+          tags: ['Eco-Friendly', 'Adventure'],
+          rating: 4.8,
+          date: '2025-04-02',
+          isFavorite: false
+        },
+        {
+          id: '2',
+          title: 'Traditional Spice Garden Tour',
+          description: 'Walk through aromatic spice plantations with a local farmer and learn about sustainable agriculture practices.',
+          imageUrl: 'https://www.birdsholiday.com/media/activity/e802b73436d5de5348f6c33e2b4b4d6c.jpg',
+          city: 'Kerala',
+          category: 'Exclusive Tours',
+          tags: ['Eco-Friendly', 'Meet Locals'],
+          rating: 4.9,
+          date: '2025-03-28',
+          isFavorite: false
+        },
+        {
+          id: '3',
+          title: 'Hidden Mountain Village Stay',
+          description: 'Experience authentic Himalayan life in this remote village where you can stay with local families.',
+          imageUrl: 'https://assets.cntraveller.in/photos/60ba23f4f27d46df614fc8e0/master/w_1600%2Cc_limit/Nabakov-Cottage-866x578.jpg',
+          city: 'Himachal',
+          category: 'Hidden Gems',
+          tags: ['Meet Locals', 'Local Food'],
+          rating: 4.7,
+          date: '2025-04-05',
+          isFavorite: false
+        },
+        {
+          id: '4',
+          title: 'Valley of Flowers Trek',
+          description: 'Join local guides on this stunning trek through the UNESCO World Heritage site with minimal environmental impact.',
+          imageUrl: 'https://trekthehimalayas.com/images/ValleyofFlowersTrek/Slider/b3d630fb-3f9a-4cc6-9fef-1be72e135695_VOF.jpg',
+          city: 'Uttarakhand',
+          category: 'Exclusive Tours',
+          tags: ['Eco-Friendly', 'Adventure'],
+          rating: 4.9,
+          date: '2025-03-25',
+          isFavorite: false
+        },
+        {
+          id: '5',
+          title: 'Desert Home Cooking Class',
+          description: 'Learn traditional Rajasthani recipes in a local home using ancient cooking methods.',
+          imageUrl: 'https://images.myguide-cdn.com/rajasthan/companies/jaipur-home-cooking-class-and-dinner-with-a-local-family/large/jaipur-home-cooking-class-and-dinner-with-a-local-family-2828714.jpg',
+          city: 'Rajasthan',
+          category: 'Local Experiences',
+          tags: ['Local Food', 'Meet Locals'],
+          rating: 4.8,
+          date: '2025-04-10',
+          isFavorite: false
+        },
+        {
+          id: '6',
+          title: 'Heritage Train Journey',
+          description: 'Travel on a restored narrow-gauge train through scenic landscapes with a local historian as your guide.',
+          imageUrl: 'https://informationsite.in/wp-content/uploads/2024/08/Valley-Queen-Heritage-Train.jpg',
+          city: 'Rajasthan',
+          category: 'Hidden Gems',
+          tags: ['Train Journeys', 'Eco-Friendly'],
+          rating: 4.6,
+          date: '2025-04-08',
+          isFavorite: false
+        },
+        {
+          id: '7',
+          title: 'Backwater Village Lunch',
+          description: 'Enjoy a home-cooked meal with a local family while supporting sustainable tourism in Kerala\'s backwaters.',
+          imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzPMNXJG66E9PIJvfGMvG8ERtmsoRURCxO9A&s',
+          city: 'Kerala',
+          category: 'Local Experiences',
+          tags: ['Local Food', 'Meet Locals', 'Eco-Friendly'],
+          rating: 4.9,
+          date: '2025-04-01',
+          isFavorite: false
+        },
+        {
+          id: '8',
+          title: 'Beach Cleanup Initiative',
+          description: 'Join locals in preserving Goa\'s beautiful beaches through this community-led conservation effort.',
+          imageUrl: 'https://growbilliontrees.com/cdn/shop/files/iStock-472102653-beach-cleaning.jpg?v=1734761735&width=1500',
+          city: 'Goa',
+          category: 'New Attractions',
+          tags: ['Eco-Friendly', 'Meet Locals'],
+          rating: 4.7,
+          date: '2025-04-09',
+          isFavorite: false
+        },
+      ];
+
+      setPosts(mockPosts);
+    };
+
+    fetchPosts();
   }, []);
 
-  return (
-    <>
-      <Head>
-        <title>Community Discoveries | Explore Local India</title>
-        <meta name="description" content="Connect with local experiences and sustainable tourism opportunities across India" />
-      </Head>
+  // Filter posts based on selected filters
+  useEffect(() => {
+    let filtered = [...posts];
+    
+    // Filter by city if not "All"
+    if (selectedCity !== 'All') {
+      filtered = filtered.filter(post => post.city === selectedCity);
+    }
+    
+    // Filter by category if selected
+    if (selectedCategory) {
+      filtered = filtered.filter(post => post.category === selectedCategory);
+    }
+    
+    // Filter by tags if any selected
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(post => 
+        selectedTags.every(tag => post.tags.includes(tag))
+      );
+    }
+    
+    setFilteredPosts(filtered);
+  }, [posts, selectedCity, selectedCategory, selectedTags]);
 
-      <div className="min-h-screen">
-        {/* Hero Header */}
-        <div className="bg-gradient-to-r from-blue-800 to-teal-500 text-white py-16 text-center">
-          <div className="container mx-auto px-4">
-            <motion.h1 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
-            >
-              Community Discoveries
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-xl max-w-2xl mx-auto"
-            >
-              Connect with local experiences and sustainable tourism opportunities across India
-            </motion.p>
-          </div>
-        </div>
-        
-        {/* Main Content */}
-        <div className="container mx-auto px-4 py-12">
-          {/* State Selection & Filters */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex flex-col md:flex-row justify-between items-center mb-12"
+  // Toggle favorite status
+  const toggleFavorite = (id: string) => {
+    setPosts(posts.map(post => 
+      post.id === id ? { ...post, isFavorite: !post.isFavorite } : post
+    ));
+  };
+
+  // Toggle tag selection
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prevTags => 
+      prevTags.includes(tag)
+        ? prevTags.filter(t => t !== tag)
+        : [...prevTags, tag]
+    );
+  };
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: currentTheme.primary }}>
+      {/* Hero Section with Title */}
+      <motion.div 
+        className="relative h-64 flex items-center justify-center overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0" style={{ 
+          background: `linear-gradient(to right, ${currentTheme.secondary}, ${currentTheme.tertiary})`,
+          opacity: 0.8 
+        }}></div>
+        <div className="relative z-10 text-center px-4">
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold text-white mb-2"
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
-            {/* State Dropdown */}
-            <StateDropdown 
-              selected={selectedState} 
-              states={states}
-              onChange={setSelectedState}
-            />
-            
-            {/* Category Tags */}
-            <div className="mt-6 md:mt-0">
-              <CategoryTags 
-                categories={categories}
-                selected={selectedCategory}
-                onChange={setSelectedCategory}
-              />
-            </div>
-          </motion.div>
-          
-          {/* Content Grid */}
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden">
-                  <div className="h-48 bg-gray-200 animate-pulse"></div>
-                  <div className="p-6">
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-2 animate-pulse"></div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
-                  </div>
+            Community Discoveries
+          </motion.h1>
+          <motion.p 
+            className="text-xl text-white max-w-2xl mx-auto"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Explore local experiences and sustainable travel across India
+          </motion.p>
+        </div>
+      </motion.div>
+
+      {/* Filter Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* City Dropdown */}
+            <div>
+              <label htmlFor="city-select" className="block text-sm font-medium text-gray-700 mb-2">
+                Destination
+              </label>
+              <div className="relative">
+                <select
+                  id="city-select"
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value as City)}
+                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                >
+                  <option value="All">All Destinations</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Himachal">Himachal</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <MapPin className="h-5 w-5 text-gray-400 mr-4" />
                 </div>
-              ))}
+              </div>
             </div>
-          ) : filteredData.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredData.map((item, index) => (
-                <DiscoveryCard
-                  key={item.id}
-                  item={item}
-                  isFavorite={!!favorites[item.id]}
-                  onToggleFavorite={() => toggleFavorite(item.id)}
-                />
-              ))}
+
+            {/* Category Filter */}
+            <div>
+              <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              <div className="relative">
+                <select
+                  id="category-select"
+                  value={selectedCategory || ''}
+                  onChange={(e) => setSelectedCategory(e.target.value as Category || null)}
+                  className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                >
+                  <option value="">All Categories</option>
+                  <option value="New Attractions">New Attractions</option>
+                  <option value="Reviews">Reviews</option>
+                  <option value="Hidden Gems">Hidden Gems</option>
+                  <option value="Exclusive Tours">Exclusive Tours</option>
+                  <option value="Local Experiences">Local Experiences</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <Compass className="h-5 w-5 text-gray-400 mr-4" />
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-xl text-gray-600">No discoveries found for the selected filters.</p>
-            </div>
-          )}
-          
-          {/* Sustainability Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="mt-20 mb-12"
-          >
-            <h2 className="text-3xl font-semibold text-center mb-12">Make Your Trip Matter</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <SustainabilityFeature
-                icon={GlobeIcon}
-                title="Eco-Friendly Tours"
-                description="Support conservation efforts and reduce your carbon footprint with our curated eco-friendly experiences."
-                bgColor="bg-green-50"
-                iconColor="text-green-600"
-              />
-              
-              <SustainabilityFeature
-                icon={HomeIcon}
-                title="Home-Cooked Meals"
-                description="Experience authentic cuisine while dining with local families and supporting community businesses."
-                bgColor="bg-blue-50"
-                iconColor="text-blue-600"
-              />
-              
-              <SustainabilityFeature
-                icon={ClockIcon}
-                title="Heritage Train Journeys"
-                description="Discover India's scenic beauty on historic train routes that support local economies along the way."
-                bgColor="bg-purple-50"
-                iconColor="text-purple-600"
-              />
-            </div>
-          </motion.div>
-          
-          {/* Newsletter Signup */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="bg-gray-100 rounded-xl p-8 text-center mt-12"
-          >
-            <h3 className="text-2xl font-semibold mb-4">Stay Updated with Local Discoveries</h3>
-            <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-              Subscribe to receive personalized recommendations and support sustainable tourism initiatives.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="px-4 py-3 rounded-lg flex-grow shadow-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
-              />
-              <button className="bg-teal-600 hover:bg-teal-700 transition-colors text-white px-6 py-3 rounded-lg shadow-sm font-medium">
-                Subscribe
-              </button>
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Footer */}
-        <footer className="bg-gray-800 text-white py-12 mt-12">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <h3 className="text-xl font-semibold mb-4">Explore Local India</h3>
-              <p className="text-gray-400 max-w-md mx-auto">
-                Connecting travelers with authentic experiences while supporting local communities and sustainable tourism.
-              </p>
-              <div className="flex justify-center gap-4 mt-6">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <span className="sr-only">Facebook</span>
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 12.07c0-5.525-4.475-10-10-10s-10 4.475-10 10c0 4.991 3.657 9.128 8.438 9.879v-6.988h-2.54v-2.891h2.54V9.796c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.771l-.443 2.891h-2.328v6.988C18.343 21.198 22 17.061 22 12.07z"/>
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <span className="sr-only">Instagram</span>
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2c-2.716 0-3.056.012-4.123.06-1.064.049-1.791.218-2.427.465a4.902 4.902 0 00-1.772 1.153A4.902 4.902 0 002.525 5.45c-.247.636-.416 1.363-.465 2.427C2.012 8.944 2 9.284 2 12s.012 3.056.06 4.123c.049 1.064.218 1.791.465 2.427a4.902 4.902 0 001.153 1.772 4.902 4.902 0 001.772 1.153c.636.247 1.363.416 2.427.465 1.067.048 1.407.06 4.123.06s3.056-.012 4.123-.06c1.064-.049 1.791-.218 2.427-.465a4.902 4.902 0 001.772-1.153 4.902 4.902 0 001.153-1.772c.247-.636.416-1.363.465-2.427.048-1.067.06-1.407.06-4.123s-.012-3.056-.06-4.123c-.049-1.064-.218-1.791-.465-2.427a4.902 4.902 0 00-1.153-1.772 4.902 4.902 0 00-1.772-1.153c-.636-.247-1.363-.416-2.427-.465C15.056 2.012 14.716 2 12 2zm0 1.802c2.67 0 2.986.01 4.04.058.976.045 1.505.207 1.858.344.466.181.8.398 1.15.748.35.35.566.684.748 1.15.137.353.3.882.344 1.857.048 1.055.058 1.37.058 4.041 0 2.67-.01 2.986-.058 4.04-.045.976-.207 1.505-.344 1.858-.181.466-.398.8-.748 1.15-.35.35-.684.566-1.15.748-.353.137-.882.3-1.857.344-1.054.048-1.37.058-4.041.058-2.67 0-2.987-.01-4.04-.058-.976-.045-1.505-.207-1.858-.344-.466-.181-.8-.398-1.15-.748-.35-.35-.566-.684-.748-1.15-.137-.353-.3-.882-.344-1.857-.048-1.055-.058-1.37-.058-4.041 0-2.67.01-2.986.058-4.04.045-.976.207-1.505.344-1.858.181-.466.398-.8.748-1.15.35-.35.684-.566 1.15-.748.353-.137.882-.3 1.857-.344 1.055-.048 1.37-.058 4.041-.058z"/>
-                    <path d="M12 15.333a3.333 3.333 0 110-6.666 3.333 3.333 0 010 6.666zm0-8.468a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27z"/>
-                    <circle cx="17.334" cy="6.666" r="1.2"/>
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  <span className="sr-only">Twitter</span>
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-                  </svg>
-                </a>
+
+            {/* Tags Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Experience Tags
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {availableTags.map((tag) => (
+                  <motion.button
+                    key={tag.name}
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                      selectedTags.includes(tag.name)
+                        ? 'bg-teal-100 text-teal-800 border border-teal-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300 hover:bg-gray-200'
+                    }`}
+                    onClick={() => toggleTag(tag.name)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="mr-1">{tag.icon}</span>
+                    {tag.name}
+                  </motion.button>
+                ))}
               </div>
             </div>
           </div>
-        </footer>
+        </div>
+
+        {/* Main Content */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center" style={{ color: currentTheme.secondary }}>
+            <span className="mr-2">
+              {selectedCity === 'All' ? 'Discovering India' : `Discovering ${selectedCity}`}
+            </span>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="inline-block"
+            >
+              <Compass className="h-5 w-5" style={{ color: currentTheme.tertiary }} />
+            </motion.div>
+          </h2>
+
+          {/* Posts Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {filteredPosts.map((post) => (
+                <motion.div
+                  key={post.id}
+                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  layout
+                >
+                  <div className="relative">
+                    <img 
+                      src={post.imageUrl} 
+                      alt={post.title} 
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-2 right-2">
+                      <motion.button
+                        className={`p-2 rounded-full ${
+                          post.isFavorite ? 'bg-red-50' : 'bg-white'
+                        }`}
+                        onClick={() => toggleFavorite(post.id)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Heart 
+                          className={`h-5 w-5 ${
+                            post.isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'
+                          }`} 
+                        />
+                      </motion.button>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                      <span className="inline-block px-3 py-1 text-xs font-medium text-white rounded-full mb-2"
+                        style={{ backgroundColor: cityThemes[post.city].secondary }}>
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center">
+                        <MapPin className="h-4 w-4 mr-1" style={{ color: cityThemes[post.city].secondary }} />
+                        <span className="text-sm text-gray-600">{post.city}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-400 mr-1" />
+                        <span className="text-sm font-medium">{post.rating}</span>
+                      </div>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">{post.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{post.description}</p>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {post.tags.map((tag) => (
+                        <span 
+                          key={tag} 
+                          className="inline-block px-2 py-1 text-xs rounded-full"
+                          style={{ 
+                            backgroundColor: `${cityThemes[post.city].primary}`, 
+                            color: `${cityThemes[post.city].secondary}` 
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-gray-500 text-sm">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {new Date(post.date).toLocaleDateString('en-US', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </div>
+                      <motion.button 
+                        className="text-sm font-medium"
+                        style={{ color: cityThemes[post.city].tertiary }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(`${post.title} ${post.city}`)}`, '_blank')}
+                      >
+                        Read more
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {filteredPosts.length === 0 && (
+            <motion.div 
+              className="text-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <p className="text-gray-500 text-lg">No experiences found with current filters.</p>
+              <p className="text-gray-400">Try adjusting your filters or check back later!</p>
+            </motion.div>
+          )}
+        </div>
+
+        {/* Eco-Friendly Initiative Section */}
+        <motion.div 
+          className="rounded-lg p-6 shadow-md mb-8"
+          style={{ backgroundColor: `${currentTheme.primary}40` }} // Adding 40 for 25% opacity
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="md:w-1/3 mb-4 md:mb-0 md:mr-6">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <Leaf className="h-16 w-16 mx-auto mb-2" style={{ color: currentTheme.secondary }} />
+                <h3 className="text-xl font-bold text-center" style={{ color: currentTheme.secondary }}>
+                  Eco-Travel Initiative
+                </h3>
+              </div>
+            </div>
+            <div className="md:w-2/3">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Supporting Sustainable Travel</h3>
+              <p className="text-gray-600 mb-4">
+                Our community pages highlight eco-friendly experiences that minimize environmental impact while 
+                maximizing positive contributions to local communities.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                
+                <motion.button 
+                  className="inline-flex items-center px-4 py-2 text-white rounded-md text-sm font-medium transition-colors"
+                  style={{ backgroundColor: currentTheme.secondary }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => window.open('http://www.ecoindia.com/eco-tourism-in-india.html', '_blank')}
+                >
+                  <Leaf className="h-4 w-4 mr-2" />
+                  Learn More About Eco-Tourism
+                </motion.button>
+                <motion.button 
+                  className="inline-flex items-center px-4 py-2 bg-white rounded-md text-sm font-medium border transition-colors"
+                  style={{ color: currentTheme.secondary, borderColor: `${currentTheme.secondary}80` }}
+                  whileHover={{ scale: 1.05, backgroundColor: `${currentTheme.primary}60` }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => window.open('http://www.ecoindia.com/eco-tourism-in-india.html', '_blank')}
+                >
+                  <HandHeart className="h-4 w-4 mr-2" />
+                  Join Community Initiatives
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Community Engagement Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Support Local Communities</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div 
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="p-4 text-white text-center" style={{ backgroundColor: currentTheme.secondary }}>
+                <Users className="h-8 w-8 mx-auto mb-2" />
+                <h3 className="text-lg font-bold">Local Guides</h3>
+              </div>
+              <div className="p-4">
+                <p className="text-gray-600 mb-4">
+                  Book tours with local guides who share authentic insights and support their communities.
+                </p>
+                <motion.a 
+                  href="/local-guides"
+                  className="block w-full py-2 text-sm font-medium rounded-md text-center transition-colors border-2"
+                  style={{ 
+                    backgroundColor: `${currentTheme.primary}80`, 
+                    color: currentTheme.secondary 
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Find Local Guides
+                </motion.a>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="p-4 text-white text-center" style={{ backgroundColor: currentTheme.tertiary }}>
+                <Coffee className="h-8 w-8 mx-auto mb-2" />
+                <h3 className="text-lg font-bold">Homestays</h3>
+              </div>
+              <div className="p-4">
+                <p className="text-gray-600 mb-4">
+                  Experience authentic local culture by staying with families in their homes and enjoying home-cooked meals.
+                </p>
+                <motion.a
+                  href="/homestays"
+                  className="block w-full py-2 text-sm font-medium rounded-md text-center transition-colors border-2"
+                  style={{ 
+                    backgroundColor: `${currentTheme.primary}80`, 
+                    color: currentTheme.tertiary 
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Discover Homestays
+                </motion.a>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="p-4 text-white text-center" style={{ backgroundColor: currentTheme.secondary }}>
+                <HandHeart className="h-8 w-8 mx-auto mb-2" />
+                <h3 className="text-lg font-bold">Support Local NGOs</h3>
+              </div>
+              <div className="p-4">
+                <p className="text-gray-600 mb-4">
+                  Contribute to local conservation and community development initiatives through trusted NGO partners.
+                </p>
+                <motion.button 
+                  className="w-full py-2 text-sm font-medium rounded-md text-center transition-colors border-2"
+                  style={{ 
+                    backgroundColor: `${currentTheme.primary}80`, 
+                    color: currentTheme.secondary 
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => window.open('https://www.helplocal.in/', '_blank')}
+                >
+                  Find NGO Partners
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
