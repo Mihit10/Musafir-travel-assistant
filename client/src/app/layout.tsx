@@ -1,9 +1,9 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import GoogleTranslate from "@/components/ui/GoogleTranslate";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from '@/components/header';
-import Footer from '@/components/footer';
+
+import ClientLayout from "@/components/ClientLayout"; // 👈 We'll make this
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
-      >
-        {/* <GoogleTranslate /> ✅ Now safely used on client */}
-        <Header />
-        {children}
-        <Footer />
-
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
