@@ -4,11 +4,13 @@ const bodyParser = require("body-parser");
 const NodeCache = require("node-cache");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 // Initialize Express app
 const app = express();
 const PORT = 5005;
 
+app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
