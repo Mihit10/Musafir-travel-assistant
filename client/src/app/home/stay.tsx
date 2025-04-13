@@ -31,7 +31,7 @@ const StayOptions = () => {
     ],
       ecoFriendly: false,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/luxury.jpg"
     },
     {
       id: 2,
@@ -44,7 +44,7 @@ const StayOptions = () => {
         "Full-service laundry"],
       ecoFriendly: true,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/cabin.jpg"
     },
     {
       id: 3,
@@ -55,7 +55,7 @@ const StayOptions = () => {
       features: ["Home cooked meals", "Cultural experience", "Local guides"],
       ecoFriendly: false,
       localHomestay: true,
-      image: "/api/placeholder/300/200"
+      image: "/homestay.jpg"
     },
     {
       id: 4,
@@ -66,7 +66,7 @@ const StayOptions = () => {
       features: ["Central location", "Modern design", "Rooftop bar"],
       ecoFriendly: false,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/boutique.jpg"
     }
   ]);
 

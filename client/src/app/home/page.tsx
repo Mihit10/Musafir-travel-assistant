@@ -8,6 +8,7 @@ import LocalVendors from "../home/local";
 import Chatbot from "../home/chatbot";
 import FlightOptions from "../home/flights";
 import StayOptions from "../home/stay";
+import Loader from "@/components/loader";
 
 interface ColorScheme {
   primary: string;
@@ -136,7 +137,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen">
-      <div
+      {/* <div
         style={{ backgroundColor: "#1a1a1a", color: "white" }}
         className="p-2"
       >
@@ -157,7 +158,7 @@ const Page = () => {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <Header
         totalDays={totalDays}
