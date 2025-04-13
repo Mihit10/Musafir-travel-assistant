@@ -28,15 +28,7 @@ const Header = ({ totalDays, onDayChange, scrollToSection }: HeaderProps) => {
       top: 64,
       zIndex: 50
     }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap'
-      }}>
+      <div className="max-w-full mx-auto flex flex-row justify-between items-center flex-wrap">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/">
             <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
@@ -64,27 +56,32 @@ const Header = ({ totalDays, onDayChange, scrollToSection }: HeaderProps) => {
             </div>
           </Link>
           
-          <div style={{ marginLeft: '2rem', position: 'relative' }}>
-            <select 
-              value={selectedDay}
-              onChange={(e) => handleDayChange(parseInt(e.target.value))}
-              style={{ 
-                appearance: 'none',
-                backgroundColor: 'var(--color-primary)',
-                border: '1px solid var(--color-secondary)',
-                color: 'var(--color-secondary)',
-                padding: '0.5rem 1rem',
-                paddingRight: '2rem',
-                borderRadius: '0.5rem',
-                outline: 'none'
-              }}
-            >
-              {Array.from({ length: totalDays }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  Day {i + 1}
-                </option>
-              ))}
-            </select>
+          <div style={{ marginLeft: '2rem' }}>
+          <div
+            style={{
+              display: 'flex', // Enable horizontal layout
+              borderBottom: '1px solid var(--color-secondary)', // Optional: Bottom border for visual separation
+            }}
+          >
+            {Array.from({ length: totalDays }, (_, i) => (
+              <span
+                key={i + 1}
+                onClick={() => handleDayChange(i + 1)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  cursor: 'pointer',
+                  color: selectedDay === i + 1 ? 'var(--color-primary)' : 'var(--color-secondary)', // Highlight selected tab
+                  backgroundColor: selectedDay === i + 1 ? 'var(--color-secondary)' : 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  // Add more styling as needed for your tab appearance
+                }}
+              >
+                Day {i + 1}
+              </span>
+            ))}
+          </div>
+        </div>
             <div style={{ 
               pointerEvents: 'none', 
               position: 'absolute', 
@@ -99,7 +96,6 @@ const Header = ({ totalDays, onDayChange, scrollToSection }: HeaderProps) => {
               </svg>
             </div>
           </div>
-        </div>
         
         <div style={{ display: 'flex', gap: '1rem' }}>
           <button 
