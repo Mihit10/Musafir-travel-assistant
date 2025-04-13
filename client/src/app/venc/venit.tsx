@@ -495,7 +495,7 @@ const VendorAdminPage: React.FC = () => {
                 <CardTitle className="text-xl font-bold">
                   <span className="truncate">{vendor.name}</span>
                 </CardTitle>
-                <div className="mt-1">{renderRatingStars(vendor.ratings)}</div>
+                
               </CardHeader>
               <CardContent className="pt-4">
                 <div className="space-y-3 text-sm">

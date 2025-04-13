@@ -203,7 +203,7 @@ const Page = () => {
           }}
         >
           <LocalVendors />
-          {/* <Chatbot ContextJson={itinerary || {}} city={selectedCity as string} /> */}
+          <Chatbot ContextJson={itinerary || {}} city={selectedCity as string} />
         </div>
       </main>
 
