@@ -229,7 +229,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center py-24 relative overflow-hidden bg-gradient-to-b from-emerald-50 to-white">
+      <section className="min-h-screen flex items-center justify-center py-6 relative overflow-hidden bg-gradient-to-b from-emerald-50 to-white">
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden z-0">
           <motion.div
