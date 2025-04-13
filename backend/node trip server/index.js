@@ -86,8 +86,12 @@ app.post("/trip", async (req, res) => {
 
 // DELETE endpoint to remove an entry from JSON data
 app.delete("/data", (req, res) => {
-  const entryToDelete = req.body;
-  console.debug("Received request to delete:", entryToDelete);
+  const { name } = req.body;
+  console.debug("Received request to delete entry with name:", name);
+
+  if (!name) {
+    return res.status(400).json({ message: "Name is required to delete an entry" });
+  }
 
   try {
     // Load the current data from the file
@@ -96,28 +100,28 @@ app.delete("/data", (req, res) => {
 
     let entryDeleted = false;
 
-    // Traverse each day and check if the entry matches
+    // Traverse each day and delete the entry with the specified name
     Object.keys(data).forEach((day) => {
-      Object.keys(data[day]).forEach((place) => {
-        if (
-          JSON.stringify(data[day][place]) === JSON.stringify(entryToDelete)
-        ) {
+      Object.keys(data[day]).forEach((placeKey) => {
+        if (data[day][placeKey]?.name === name) {
           // Delete the specific entry
-          delete data[day][place];
+          delete data[day][placeKey];
           entryDeleted = true;
-
-          // Reorganize the places within the day
-          let updatedPlaces = {};
-          let count = 1;
-
-          Object.keys(data[day]).forEach((key) => {
-            updatedPlaces[`place_${count}`] = data[day][key];
-            count++;
-          });
-
-          data[day] = updatedPlaces;
         }
       });
+
+      if (entryDeleted) {
+        // Reorganize the places within the day
+        const updatedPlaces = {};
+        let count = 1;
+
+        Object.keys(data[day]).forEach((key) => {
+          updatedPlaces[`place_${count}`] = data[day][key];
+          count++;
+        });
+
+        data[day] = updatedPlaces;
+      }
     });
 
     if (!entryDeleted) {
@@ -128,15 +132,14 @@ app.delete("/data", (req, res) => {
     fs.writeFileSync(dataPath, JSON.stringify(data, null, 2), "utf-8");
     fallbackData = data; // Update in-memory data
 
-    console.info("Entry deleted successfully. Data updated.");
+    console.info("Entry with name deleted successfully. Data updated.");
     res.json({ message: "Entry deleted successfully", data });
   } catch (error) {
     console.error("Error deleting entry:", error);
-    res
-      .status(500)
-      .json({ message: "Error deleting entry", error: error.message });
+    res.status(500).json({ message: "Error deleting entry", error: error.message });
   }
 });
+
 
 // Route to find and return the remaining places
 app.get("/remaining-places", (req, res) => {

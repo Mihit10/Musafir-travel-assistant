@@ -140,7 +140,11 @@ const Page = () => {
         >
           <div>
             {itinerary ? (
-              <Itinerary selectedDay={selectedDay} allDaysData={itinerary} />
+              <Itinerary
+                selectedDay={selectedDay}
+                allDaysData={itinerary}
+                onItineraryUpdate={setItinerary}
+              />
             ) : (
               <p>Loading itinerary...</p>
             )}
