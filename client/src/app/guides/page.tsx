@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Phone, Mail, MessageSquare, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Guide {
   id: number;
@@ -323,14 +324,15 @@ export default function LocalGuidesPage() {
   }, []);
   
   // Filter guides when city selection changes
-  useEffect(() => {
-    if (selectedCity && allGuides.length > 0) {
-      const filteredGuides = allGuides.filter(guide => guide.city === selectedCity);
-      setGuides(filteredGuides);
-    } else {
-      setGuides([]);
-    }
-  }, [selectedCity, allGuides]);
+useEffect(() => {
+  if (selectedCity) {
+    const filteredGuides = allGuides.filter(guide => guide.city === selectedCity);
+    setGuides(filteredGuides);
+  } else {
+    // If no city is selected, show all guides
+    setGuides(allGuides);
+  }
+}, [selectedCity, allGuides]);
   
   const toggleExpand = (guideId: number) => {
     if (expandedGuide === guideId) {
@@ -347,7 +349,32 @@ export default function LocalGuidesPage() {
   
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Local Travel Guides</h1>
+      <motion.div 
+    className="py-12 text-center"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.8 }}
+>
+    <motion.h1 
+        className="text-4xl md:text-5xl font-bold mb-3"
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        style={{ color: '#3F51B5' }} // Dark gray for the heading
+    >
+        Local Travel Guides
+    </motion.h1>
+    <motion.p 
+        className="text-xl max-w-2xl mx-auto"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        style={{ color: '#26A69A' }} // Medium gray for the paragraph
+    >
+        Discover authentic local insights and connect with experienced guides across India
+    </motion.p>
+</motion.div>
+
       
       <div className="mb-8">
         <label htmlFor="city-select" className="block text-lg font-medium mb-2">
