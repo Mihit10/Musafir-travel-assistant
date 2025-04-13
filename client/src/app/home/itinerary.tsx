@@ -181,6 +181,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
         ))}
       </div>
     </div>
+    </div>
   );
 };
 
