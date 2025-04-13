@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/router";
 
 // Website name constant for easy updates
-const WEBSITE_NAME = "Raste Pe";
+const WEBSITE_NAME = "Musafir";
 
 // Types
 type City = "Goa" | "Kerala" | "Himachal" | "Uttarakhand" | "Rajasthan";
@@ -130,21 +130,21 @@ const testimonials = [
     name: "Priya Sharma",
     location: "Delhi",
     quote:
-      "Raste Pe connected us with a local guide in Himachal who took us to hidden waterfalls no tourist usually sees!",
+      "Musafir connected us with a local guide in Himachal who took us to hidden waterfalls no tourist usually sees!",
     image: "https://cdn-icons-png.flaticon.com/128/4202/4202832.png",
   },
   {
     name: "Rahul Mehra",
     location: "Mumbai",
     quote:
-      "The homestay Raste Pe recommended in Kerala gave us an authentic experience and the family taught us traditional cooking.",
+      "The homestay Musafir recommended in Kerala gave us an authentic experience and the family taught us traditional cooking.",
     image: "https://cdn-icons-png.flaticon.com/128/4202/4202843.png",
   },
   {
     name: "Ananya Patel",
     location: "Bangalore",
     quote:
-      "Thanks to Raste Pe, we supported local artisans in Rajasthan while getting unique souvenirs at fair prices.",
+      "Thanks to Musafir, we supported local artisans in Rajasthan while getting unique souvenirs at fair prices.",
     image: "https://cdn-icons-png.flaticon.com/512/4202/4202850.png ",
   },
 ];

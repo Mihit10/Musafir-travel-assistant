@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Menu, X, Map } from 'lucide-react';
 
 // Brand name variable that can be referenced throughout the component
-const BRAND_NAME = "Raste-pe";
+const BRAND_NAME = "Musafir";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,7 +53,7 @@ const Header = () => {
           : 'radial-gradient(circle at center, #1f3347, #162435, #111827)'
       }}
     >
-      <div className="container mx-auto px-4 py-4 md:py-3">
+      <div className="container mx-auto px-10 py-4 md:py-3">
         <div className="flex items-center justify-between">
           {/* Brand Logo/Name */}
           <div className="flex items-center">
