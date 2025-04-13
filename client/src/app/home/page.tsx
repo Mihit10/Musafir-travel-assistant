@@ -152,8 +152,8 @@ const Page = () => {
 
           <div style={{ height: "100vh", width: "100%" }}>
             <iframe
-              src="/mapbox"
-              title="Mapbox Map"
+              src={`/mapbox?day=day_${selectedDay}`}
+              title={`Map for Day ${selectedDay}`}
               style={{ width: "100%", height: "100%", border: "none" }}
             />
           </div>
