@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 const cache = new NodeCache({ stdTTL: 600 });
 
 // Threshold time for fallback in milliseconds
-const TIMEOUT_THRESHOLD = 210000;
+const TIMEOUT_THRESHOLD = 75000;
 
 const dataPath = path.join(__dirname, "cache", "tempData.json");
 
