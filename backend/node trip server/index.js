@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 const cache = new NodeCache({ stdTTL: 600 });
 
 // Threshold time for fallback in milliseconds
-const TIMEOUT_THRESHOLD = 10000;
+const TIMEOUT_THRESHOLD = 210000;
 
 const dataPath = path.join(__dirname, "cache", "tempData.json");
 
@@ -90,7 +90,9 @@ app.delete("/data", (req, res) => {
   console.debug("Received request to delete entry with name:", name);
 
   if (!name) {
-    return res.status(400).json({ message: "Name is required to delete an entry" });
+    return res
+      .status(400)
+      .json({ message: "Name is required to delete an entry" });
   }
 
   try {
@@ -136,10 +138,11 @@ app.delete("/data", (req, res) => {
     res.json({ message: "Entry deleted successfully", data });
   } catch (error) {
     console.error("Error deleting entry:", error);
-    res.status(500).json({ message: "Error deleting entry", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting entry", error: error.message });
   }
 });
-
 
 // Route to find and return the remaining places
 app.get("/remaining-places", (req, res) => {
