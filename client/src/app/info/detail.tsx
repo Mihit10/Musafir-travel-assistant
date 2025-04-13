@@ -129,7 +129,11 @@ export default function BenitoFlexbox({ place }: BenitoFlexboxProps) {
   const [placeData, setPlaceData] = useState<{ [key: string]: any } | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [imgUrl, setImgUrl] = useState('');
+  
+
   const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+  const serp = process.env.NEXT_PUBLIC_SERP
 
   useEffect(() => {
     if (!prompt) return;
@@ -209,6 +213,34 @@ Only output a valid JSON object — do not include any extra commentary.
     callGroq();
   }, [place]);
 
+  useEffect(() => {
+    if (!place) return;
+  
+    const fetchImages = async () => {
+      setLoading(true);
+      setResponse("");
+  
+      try {
+        const res = await fetch(`/api/serp?place=${encodeURIComponent(place)}`);
+        const data = await res.json();
+        const img = data.images_results[0].original
+  
+        console.log("Images:", img);
+
+        setImgUrl(img || []);
+      } catch (err) {
+        setResponse("Error fetching images");
+        setImgUrl('');
+      }
+  
+      setLoading(false);
+    };
+  
+    fetchImages();
+  }, [place]);
+
+
+
 
   const [homestays, setHomestays] = useState([]);
   const [isClient, setIsClient] = useState(false);
@@ -246,7 +278,7 @@ Only output a valid JSON object — do not include any extra commentary.
     return <div>Loading...</div>; // You can replace this with a loader or spinner component
   }
 
-  return placeData ? (
+  return placeData&&imgUrl!=="" ? (
     <div className="max-w-7xl mx-auto p-4 md:p-6 bg-white">
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-6">{placeData.title}</h1>
       
@@ -263,7 +295,7 @@ Only output a valid JSON object — do not include any extra commentary.
   >
     <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent z-10"></div>
     <img
-      src="/taj-mahal.webp"
+      src={imgUrl}
       alt={placeData.title}
       className="w-full h-full object-cover"
     />

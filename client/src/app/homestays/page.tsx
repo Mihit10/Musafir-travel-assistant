@@ -1,38 +1,53 @@
-"use client"; // Correct directive to mark the component as client-side
+"use client";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Star, Home, Check, X, Wifi, Coffee, Waves } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { toast } from "react-toastify"; // For toast notifications
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_URL = "https://rhino-frank-tightly.ngrok-free.app/homestays"; // Your backend API
+// Define TypeScript interface for Homestay
+interface Homestay {
+  id: string;
+  owner_name: string;
+  phone_number: string;
+  ratings: number;
+  city: string;
+  place: string;
+  cost_per_night: number;
+  room_category: string;
+  is_ac: boolean;
+  amenities: string;
+  rooms_available: number;
+}
+
+const API_URL = "https://rhino-frank-tightly.ngrok-free.app/homestays";
 
 const HomestaysPage = () => {
-  const [homestays, setHomestays] = useState([]);
-  const [formData, setFormData] = useState({
-    owner_name: "",
-    phone_number: "",
-    ratings: 0,
-    city: "",
-    place: "",
-    cost_per_night: 0,
-    room_category: "",
-    is_ac: false,
-    amenities: "",
-    rooms_available: 0,
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editHomestayId, setEditHomestayId] = useState(null);
+  const [homestays, setHomestays] = useState<Homestay[]>([]);
+  const [selectedHomestay, setSelectedHomestay] = useState<Homestay | null>(null);
+  const [locationFilter, setLocationFilter] = useState<string>("all");
 
   // Fetch homestays on component mount
   useEffect(() => {
     const fetchHomestays = async () => {
       try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get<Homestay[]>(API_URL, {
           headers: {
             'ngrok-skip-browser-warning': 'true',
             'Accept': 'application/json',
@@ -42,230 +57,246 @@ const HomestaysPage = () => {
         setHomestays(response.data);
       } catch (error) {
         toast.error("Failed to load homestays");
+        console.error("Error fetching homestays:", error);
       }
     };
 
     fetchHomestays();
   }, []);
 
-  // Handle form changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle form submission for creating and editing homestays
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (isEditing) {
-      try {
-        await axios.put(`${API_URL}/${editHomestayId}`, formData);
-        toast.success("Homestay updated successfully!");
-        setIsEditing(false);
-      } catch (error) {
-        toast.error("Failed to update homestay");
-      }
-    } else {
-      try {
-        await axios.post(API_URL, formData);
-        toast.success("Homestay created successfully!");
-      } catch (error) {
-        toast.error("Failed to create homestay");
-      }
-    }
-
-    // Clear form
-    setFormData({
-      owner_name: "",
-      phone_number: "",
-      ratings: 0,
-      city: "",
-      place: "",
-      cost_per_night: 0,
-      room_category: "",
-      is_ac: false,
-      amenities: "",
-      rooms_available: 0,
-    });
-
-    // Reload homestays
-    const response = await axios.get(API_URL);
-    setHomestays(response.data);
-  };
-
-  // Handle editing
-  const handleEdit = (homestay: any) => {
-    setFormData(homestay);
-    setIsEditing(true);
-    setEditHomestayId(homestay.id);
-  };
-
   // Handle deleting
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
       toast.success("Homestay deleted successfully!");
-      const response = await axios.get(API_URL);
-      setHomestays(response.data);
+      setHomestays(homestays.filter(homestay => homestay.id !== id));
     } catch (error) {
       toast.error("Failed to delete homestay");
+      console.error("Error deleting homestay:", error);
     }
   };
 
+  // Render star ratings
+  const renderRatingStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />);
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400 opacity-60" />);
+      } else {
+        stars.push(<Star key={i} className="w-4 h-4 text-gray-300" />);
+      }
+    }
+    
+    return stars;
+  };
+
+  // Get a background image URL based on location/place
+  const getLocationImage = (place: string): string => {
+    // For demonstration, return a placeholder image
+    // In a real app, you might have actual location images
+    return `/api/placeholder/400/200`;
+  };
+
+  // Get color based on room category
+  const getRoomCategoryColor = (category: string): string => {
+    const categoryColors: { [key: string]: string } = {
+      "Standard": "#64748b",
+      "Deluxe": "#0ea5e9",
+      "Suite": "#8b5cf6",
+      "Premium": "#f59e0b",
+      "Family": "#10b981",
+    };
+  
+    return categoryColors[category] || "#64748b";
+  };
+
+  // Extract first two amenities as icons
+  const getAmenityIcons = (amenitiesString: string) => {
+    const amenitiesArray = amenitiesString.split(',').map(item => item.trim());
+    const icons = [];
+    
+    for (const amenity of amenitiesArray.slice(0, 2)) {
+      if (amenity.toLowerCase().includes('wifi')) {
+        icons.push(<Wifi key="wifi" className="w-4 h-4" />);
+      } else if (amenity.toLowerCase().includes('pool') || amenity.toLowerCase().includes('swimming')) {
+        icons.push(<Waves key="pool" className="w-4 h-4" />);
+      } else if (amenity.toLowerCase().includes('breakfast') || amenity.toLowerCase().includes('coffee')) {
+        icons.push(<Coffee key="coffee" className="w-4 h-4" />);
+      } else {
+        icons.push(<Home key={amenity} className="w-4 h-4" />);
+      }
+    }
+    
+    return icons;
+  };
+
+  // Filter homestays by location
+  const filteredHomestays = locationFilter === "all" 
+    ? homestays 
+    : homestays.filter(homestay => homestay.place === locationFilter || homestay.city === locationFilter);
+
+  // Get unique locations for filter
+  const locations = [...new Set([...homestays.map(h => h.place), ...homestays.map(h => h.city)])];
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        {isEditing ? "Edit Homestay" : "Create New Homestay"}
-      </h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Label>Owner Name</Label>
-            <Input
-              name="owner_name"
-              value={formData.owner_name}
-              onChange={handleInputChange}
-              placeholder="Enter owner's name"
-              required
-            />
-          </div>
-          <div>
-            <Label>Phone Number</Label>
-            <Input
-              name="phone_number"
-              value={formData.phone_number}
-              onChange={handleInputChange}
-              placeholder="Enter phone number"
-              required
-            />
-          </div>
-          <div>
-            <Label>Ratings</Label>
-            <Input
-              name="ratings"
-              type="number"
-              value={formData.ratings}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>City</Label>
-            <Input
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              placeholder="Enter city"
-              required
-            />
-          </div>
-          <div>
-            <Label>Place</Label>
-            <Input
-              name="place"
-              value={formData.place}
-              onChange={handleInputChange}
-              placeholder="Enter place"
-              required
-            />
-          </div>
-          <div>
-            <Label>Cost Per Night</Label>
-            <Input
-              name="cost_per_night"
-              type="number"
-              value={formData.cost_per_night}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label>Room Category</Label>
-            <Input
-              name="room_category"
-              value={formData.room_category}
-              onChange={handleInputChange}
-              placeholder="Enter room category"
-              required
-            />
-          </div>
-          <div>
-            <Label>AC Available</Label>
-            <Input
-              name="is_ac"
-              type="checkbox"
-              checked={formData.is_ac}
-              onChange={(e) =>
-                setFormData({ ...formData, is_ac: e.target.checked })
-              }
-            />
-          </div>
-          <div>
-            <Label>Amenities</Label>
-            <Input
-              name="amenities"
-              value={formData.amenities}
-              onChange={handleInputChange}
-              placeholder="Enter amenities (comma-separated)"
-              required
-            />
-          </div>
-          <div>
-            <Label>Rooms Available</Label>
-            <Input
-              name="rooms_available"
-              type="number"
-              value={formData.rooms_available}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0">
+          <span className="text-indigo-600">Discover</span> Homestays
+        </h1>
+        <div className="w-full md:w-64">
+          <Select value={locationFilter} onValueChange={setLocationFilter}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Filter by location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Locations</SelectItem>
+              {locations.map(location => (
+                <SelectItem key={location} value={location}>{location}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div className="flex justify-end space-x-4">
-          <Button type="submit">
-            {isEditing ? "Update Homestay" : "Create Homestay"}
-          </Button>
-        </div>
-      </form>
-
-      <h2 className="text-xl font-semibold mt-8">Homestays List</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-        {homestays.map((homestay: any) => (
-          <Card key={homestay.id} className="shadow-lg">
-            <CardHeader>
-              <CardTitle>{homestay.owner_name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Phone: {homestay.phone_number}</p>
-              <p>City: {homestay.city}</p>
-              <p>Place: {homestay.place}</p>
-              <p>Cost Per Night: ₹{homestay.cost_per_night}</p>
-              <p>Ratings: {homestay.ratings}</p>
-              <p>Room Category: {homestay.room_category}</p>
-              <p>AC Available: {homestay.is_ac ? "Yes" : "No"}</p>
-              <p>Amenities: {homestay.amenities}</p>
-              <p>Rooms Available: {homestay.rooms_available}</p>
-            </CardContent>
-            <div className="flex justify-between items-center p-2">
-              <Button
-                onClick={() => handleEdit(homestay)}
-                className="bg-blue-500 text-white"
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => handleDelete(homestay.id)}
-                className="bg-red-500 text-white"
-              >
-                Delete
-              </Button>
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredHomestays.map((homestay) => (
+          <Card 
+            key={homestay.id} 
+            className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer"
+            onClick={() => setSelectedHomestay(homestay)}
+          >
+            <div className="h-40 bg-gray-200 relative">
+              <img 
+                src={getLocationImage(homestay.place)} 
+                alt={homestay.place}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-0 right-0 p-2">
+                <Badge 
+                  className="font-semibold" 
+                  style={{ backgroundColor: getRoomCategoryColor(homestay.room_category) }}
+                >
+                  {homestay.room_category}
+                </Badge>
+              </div>
             </div>
+            
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-xl font-bold">{homestay.owner_name}</CardTitle>
+                <div className="text-lg font-bold text-indigo-600">₹{homestay.cost_per_night}</div>
+              </div>
+              <div className="flex items-center text-sm text-gray-500">
+                {homestay.city}, {homestay.place}
+              </div>
+            </CardHeader>
+            
+            <CardContent className="pb-3">
+              <div className="flex items-center mb-3">
+                {renderRatingStars(homestay.ratings)}
+                <span className="ml-2 text-sm">{homestay.ratings}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  {getAmenityIcons(homestay.amenities)}
+                  <span className="text-sm text-gray-500">+{homestay.amenities.split(',').length} amenities</span>
+                </div>
+                <div className="flex items-center">
+                  {homestay.is_ac ? 
+                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">AC</Badge> :
+                    <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">Non-AC</Badge>
+                  }
+                </div>
+              </div>
+            </CardContent>
+            
+            <CardFooter className="flex justify-between pt-0 text-sm">
+              <div className="text-gray-500">
+                <span className="font-medium">{homestay.rooms_available}</span> rooms left
+              </div>
+              
+            </CardFooter>
           </Card>
         ))}
       </div>
+      
+      <Dialog open={selectedHomestay !== null} onOpenChange={(open) => !open && setSelectedHomestay(null)}>
+        {selectedHomestay && (
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <h2 className="text-2xl font-bold">{selectedHomestay.owner_name}</h2>
+              <p className="text-gray-500">{selectedHomestay.city}, {selectedHomestay.place}</p>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  {renderRatingStars(selectedHomestay.ratings)}
+                  <span className="ml-2 text-sm">{selectedHomestay.ratings}</span>
+                </div>
+                <div className="text-2xl font-bold text-indigo-600">₹{selectedHomestay.cost_per_night}</div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold mb-2">Details</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between border-b pb-1">
+                      <span className="font-medium">Phone:</span>
+                      <span>{selectedHomestay.phone_number}</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-1">
+                      <span className="font-medium">Room Category:</span>
+                      <span>
+                        <Badge 
+                          style={{ backgroundColor: getRoomCategoryColor(selectedHomestay.room_category) }}
+                        >
+                          {selectedHomestay.room_category}
+                        </Badge>
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b pb-1">
+                      <span className="font-medium">AC:</span>
+                      <span className="flex items-center">
+                        {selectedHomestay.is_ac ? 
+                          <><Check className="w-4 h-4 text-green-500 mr-1" /> Yes</> : 
+                          <><X className="w-4 h-4 text-red-500 mr-1" /> No</>
+                        }
+                      </span>
+                    </div>
+                    <div className="flex justify-between pb-1">
+                      <span className="font-medium">Rooms Available:</span>
+                      <span>{selectedHomestay.rooms_available}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-2">Amenities</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedHomestay.amenities.split(',').map((amenity, index) => (
+                      <Badge key={index} variant="outline" className="bg-gray-50">
+                        {amenity.trim()}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white" variant="default">Book Now</Button>
+              </div>
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 };
