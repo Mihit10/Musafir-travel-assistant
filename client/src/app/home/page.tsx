@@ -43,20 +43,24 @@ const Page = () => {
 
   const [selectedDay, setSelectedDay] = useState(1);
   const [totalDays, setTotalDays] = useState(7); // Fallback to 7 days
-  const [selectedCity, setSelectedCity] = useState<CityName>("default");
+  const [selectedCity, setSelectedCity] = useState<string>(""); // Use string type instead of CityName
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+  const [preferences, setPreferences] = useState<string[]>([]);
 
   const flightOptionsRef = useRef<HTMLDivElement>(null);
   const stayOptionsRef = useRef<HTMLDivElement>(null);
+  const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
 
   const [itinerary, setItinerary] = useState<Record<string, any> | null>(null);
 
   const fetchItinerary = async () => {
     const apiUrl = "http://127.0.0.1:5005/trip";
     const params = {
-      state: "Himachal",
-      check_in_date: "2025-06-18",
-      check_out_date: "2025-06-25",
-      preferences: ["nature", "adventure", "heritage"],
+      state: selectedCity,
+      check_in_date: checkInDate,
+      check_out_date: checkOutDate,
+      preferences: selectedPreferences,
     };
 
     try {
@@ -65,6 +69,7 @@ const Page = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(params),
       });
+
       const data = await response.json();
       if (data?.data) {
         setItinerary(data.data); // Save all days' data in state
@@ -75,8 +80,38 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchItinerary();
+    // Parse query parameters
+    const searchParams = new URLSearchParams(window.location.search);
+    const state = searchParams.get("destination") || ""; // Use 'destination' instead of 'state'
+    const checkIn = searchParams.get("start_date") || "";
+    const checkOut = searchParams.get("end_date") || "";
+    const prefs = searchParams.get("preferences")?.split(",") || [];
+
+    if (state) setSelectedCity(state);
+    if (checkIn) setCheckInDate(checkIn);
+    if (checkOut) setCheckOutDate(checkOut);
+    if (prefs.length) setSelectedPreferences(prefs);
+
+    // Calculate total days if dates are provided
+    if (checkIn && checkOut) {
+      const startDate = new Date(checkIn);
+      const endDate = new Date(checkOut);
+      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setTotalDays(diffDays);
+    }
   }, []);
+
+  useEffect(() => {
+    if (
+      selectedCity &&
+      checkInDate &&
+      checkOutDate &&
+      selectedPreferences.length > 0
+    ) {
+      fetchItinerary(); // Fetch itinerary after the required data is available
+    }
+  }, [selectedCity, checkInDate, checkOutDate, selectedPreferences]);
 
   useEffect(() => {
     document.body.classList.remove(
@@ -167,7 +202,7 @@ const Page = () => {
           }}
         >
           <LocalVendors />
-          <Chatbot ContextJson={itinerary || {}} city={selectedCity} />
+          {/* <Chatbot ContextJson={itinerary || {}} city={selectedCity as string} /> */}
         </div>
       </main>
 
@@ -203,3 +238,6 @@ const Page = () => {
 };
 
 export default Page;
+function setSelectedPreferences(prefs: string[]) {
+  throw new Error("Function not implemented.");
+}
