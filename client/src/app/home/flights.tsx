@@ -6,38 +6,38 @@ const FlightOptions = () => {
   const [flights] = useState([
     {
       id: 1,
-      airline: "SkyWings",
-      flightNo: "SW123",
-      departure: "08:30 AM",
-      arrival: "10:45 AM",
-      price: "$249",
+      airline: "IndiGo",
+      flightNo: "6E 2775",
+      departure: "01:15 PM",
+      arrival: "03:15 PM",
+      price: "11912",
       direct: true
     },
     {
       id: 2,
-      airline: "AirGlobal",
-      flightNo: "AG456",
-      departure: "11:15 AM",
-      arrival: "01:30 PM",
-      price: "$199",
+      airline: "Air India",
+      flightNo: "AI 2695",
+      departure: "4:50 PM",
+      arrival: "7:15 PM",
+      price: "12514",
       direct: true
     },
     {
       id: 3,
-      airline: "TransOcean",
-      flightNo: "TO789",
-      departure: "02:45 PM",
-      arrival: "06:20 PM",
-      price: "$175",
-      direct: false
+      airline: "Akasa Air",
+      flightNo: "QP 1120",
+      departure: "07:00 PM",
+      arrival: "9:15 PM",
+      price: "12045",
+      direct: true
     },
     {
       id: 4,
-      airline: "MountainJet",
-      flightNo: "MJ234",
-      departure: "07:00 PM",
-      arrival: "09:15 PM",
-      price: "$225",
+      airline: "Air India",
+      flightNo: "AI 2354",
+      departure: "02:15 PM",
+      arrival: "04:35 PM",
+      price: "11995",
       direct: true
     }
   ]);
