@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Clock } from "lucide-react";
 
 type ItineraryProps = {
   selectedDay: number;
@@ -116,9 +117,13 @@ const Itinerary: React.FC<ItineraryProps> = ({
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-      <h2 className="text-2xl font-bold mb-4 text-secondary">
-        Day {selectedDay} Itinerary
-      </h2>
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <h2 className="text-2xl font-bold mb-6 text-secondary flex items-center">
+          <span className="bg-secondary rounded-full w-8 h-8 flex items-center justify-center mr-3 text-white border-2 border-secondary">
+            {selectedDay}
+          </span>
+          Day {selectedDay} Itinerary
+        </h2>
 
       <div className="space-y-4">
         {places.map((place) => (
@@ -175,6 +180,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
