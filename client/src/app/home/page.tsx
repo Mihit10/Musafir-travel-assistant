@@ -8,6 +8,7 @@ import LocalVendors from "../home/local";
 import Chatbot from "../home/chatbot";
 import FlightOptions from "../home/flights";
 import StayOptions from "../home/stay";
+import Loader from "@/components/loader";
 
 interface ColorScheme {
   primary: string;
