@@ -22,7 +22,7 @@ interface ColorScheme {
 
 interface ChatbotProps {
   ContextJson: Record<string, any>;
-  city?: CityName;
+  city?: string; // <-- Allow any string to be passed
 }
 
 // 🔹 City Themes
@@ -61,7 +61,7 @@ const colors: Record<CityName, ColorScheme> = {
 
 
 const Chatbot: React.FC<ChatbotProps> = ({ ContextJson, city = "default" }) => {
-  const theme = colors[city] || colors.default;
+  const theme = colors[city as CityName] || colors.default;
 
   const [messages, setMessages] = useState<
     { sender: "user" | "bot"; text: string; typing: boolean }[]
