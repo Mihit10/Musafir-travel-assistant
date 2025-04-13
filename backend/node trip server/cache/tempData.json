@@ -27,6 +27,7 @@
       "travel_time_to_next": 300,
       "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla."
     },
+
     "place_4": {
       "name": "Jakhoo Hill",
       "coordinates": {
@@ -68,6 +69,15 @@
   },
   "day_3": {
     "place_1": {
+      "name": "Solang Valley",
+      "coordinates": {
+        "latitude": 32.2861,
+        "longitude": 77.2042
+      },
+      "travel_time_to_next": 60,
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks."
+    },
+    "place_2": {
       "name": "Rohtang Pass",
       "coordinates": {
         "latitude": 32.3638,
@@ -76,7 +86,7 @@
       "travel_time_to_next": 180,
       "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports."
     },
-    "place_2": {
+    "place_3": {
       "name": "Great Himalayan National Park",
       "coordinates": {
         "latitude": 31.6333,
@@ -84,15 +94,6 @@
       },
       "travel_time_to_next": 0,
       "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities."
-    },
-    "place_3": {
-      "coordinates": {
-        "latitude": 32.0966,
-        "longitude": 76.2711
-      },
-      "name": "Kangra Fort",
-      "description": "One of the oldest forts in India, offering panoramic views of the surrounding valley.",
-      "travel_time_to_next": 45
     }
   }
 }
