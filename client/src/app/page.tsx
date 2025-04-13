@@ -312,7 +312,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600 flex flex-col justify-center items-center p-8 text-white">
                       <div className="mb-6 text-6xl">🧭</div>
                       <h3 className="text-2xl font-bold mb-3">
-                        Plan Your Journey
+                        Musafir
                       </h3>
                       <p className="text-sm opacity-90 text-center">
                         Sustainable, community-connected travel experiences that
