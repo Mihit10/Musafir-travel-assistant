@@ -68,9 +68,9 @@ app.post("/trip", async (req, res) => {
     clearTimeout(timeoutId);
 
     console.info("API request successful. Storing response in cache.");
-    cache.set(cacheKey, response.data);
+    // cache.set(cacheKey, response.data);
 
-    return res.json(response.data);
+    return res.json(FALLBACK_RESPONSE);
   } catch (error) {
     console.error("Error during API request:", error.message);
 
