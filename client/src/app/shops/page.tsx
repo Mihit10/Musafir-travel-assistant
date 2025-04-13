@@ -1,40 +1,47 @@
 "use client";
-
+import { Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// Define proper TypeScript interface for Vendor
+interface Vendor {
+  id: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  gst_number: string;
+  address: string;
+  shop_type: string;
+  city: string;
+  state: string;
+  ratings: number;
+}
 
 const ShopsPage = () => {
-  const [vendors, setVendors] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone_number: "",
-    gst_number: "",
-    address: "",
-    shop_type: "",
-    city: "",
-    ratings: 0,
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null);
+  const [stateFilter, setStateFilter] = useState<string>("all");
 
   const API_URL = "https://rhino-frank-tightly.ngrok-free.app/vendors";
 
   // Fetch all vendors
   const fetchVendors = async () => {
     try {
-      const response = await axios.get(API_URL, {
+      const response = await axios.get<Vendor[]>(API_URL, {
         headers: {
           'ngrok-skip-browser-warning': 'true',
           'Accept': 'application/json',
@@ -44,33 +51,6 @@ const ShopsPage = () => {
       setVendors(response.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
-    }
-  };
-
-  // Create or update a vendor
-  const handleSubmit = async () => {
-    try {
-      if (isEditing) {
-        await axios.put(`${API_URL}/${editingId}`, formData);
-      } else {
-        await axios.post(API_URL, formData);
-      }
-      setFormData({
-        name: "",
-        email: "",
-        phone_number: "",
-        gst_number: "",
-        address: "",
-        shop_type: "",
-        city: "",
-        ratings: 0,
-      });
-      setIsEditing(false);
-      setEditingId(null);
-      setIsDialogOpen(false);
-      fetchVendors();
-    } catch (error) {
-      console.error("Error saving vendor:", error);
     }
   };
 
@@ -84,13 +64,47 @@ const ShopsPage = () => {
     }
   };
 
-  // Open dialog for editing
-  const handleEdit = (vendor: any) => {
-    setIsEditing(true);
-    setEditingId(vendor.id);
-    setFormData(vendor);
-    setIsDialogOpen(true);
+  // Open vendor details dialog
+  const handleViewDetails = (vendor: Vendor) => {
+    setSelectedVendor(vendor);
   };
+
+  // Color mapping for states
+  function getStateColor(state: string): string {
+    const stateColors: { [key: string]: string } = {
+      "Goa": "#3b82f6",
+      "Kerala": "#10b981",
+      "Himachal": "#6366f1",
+      "Uttarakhand": "#8b5cf6",
+      "Rajasthan": "#f59e0b",
+    };
+  
+    return stateColors[state] || "#64748b";
+  }
+  
+  // Render star ratings
+  const renderRatingStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />);
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400 opacity-60" />);
+      } else {
+        stars.push(<Star key={i} className="w-4 h-4 text-gray-300" />);
+      }
+    }
+    
+    return stars;
+  };
+
+  // Filter vendors by state
+  const filteredVendors = stateFilter === "all" 
+    ? vendors 
+    : vendors.filter(vendor => vendor.state === stateFilter);
 
   useEffect(() => {
     fetchVendors();
@@ -98,142 +112,53 @@ const ShopsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Vendors</h1>
-      <div className="mb-4">
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setIsEditing(false)}>Add Vendor</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <h2 className="text-xl font-semibold">
-                {isEditing ? "Edit Vendor" : "Add Vendor"}
-              </h2>
-            </DialogHeader>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-              className="space-y-4"
-            >
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone_number">Phone Number</Label>
-                <Input
-                  id="phone_number"
-                  value={formData.phone_number}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone_number: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="gst_number">GST Number</Label>
-                <Input
-                  id="gst_number"
-                  value={formData.gst_number}
-                  onChange={(e) =>
-                    setFormData({ ...formData, gst_number: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) =>
-                    setFormData({ ...formData, address: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="shop_type">Shop Type</Label>
-                <Input
-                  id="shop_type"
-                  value={formData.shop_type}
-                  onChange={(e) =>
-                    setFormData({ ...formData, shop_type: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  value={formData.city}
-                  onChange={(e) =>
-                    setFormData({ ...formData, city: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="ratings">Ratings</Label>
-                <Input
-                  id="ratings"
-                  type="number"
-                  value={formData.ratings}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      ratings: parseFloat(e.target.value),
-                    })
-                  }
-                  required
-                />
-              </div>
-              <Button type="submit">{isEditing ? "Update" : "Create"}</Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Vendors</h1>
+        <div className="w-full md:w-64">
+          <Select value={stateFilter} onValueChange={setStateFilter}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Filter by state" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All States</SelectItem>
+              <SelectItem value="Goa">Goa</SelectItem>
+              <SelectItem value="Kerala">Kerala</SelectItem>
+              <SelectItem value="Himachal">Himachal</SelectItem>
+              <SelectItem value="Uttarakhand">Uttarakhand</SelectItem>
+              <SelectItem value="Rajasthan">Rajasthan</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {vendors.map((vendor: any) => (
-          <Card key={vendor.id}>
-            <CardHeader>
-              <CardTitle>{vendor.name}</CardTitle>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredVendors.map((vendor) => (
+          <Card 
+            key={vendor.id} 
+            className="cursor-pointer overflow-hidden hover:shadow-lg transition-shadow duration-300 border-t-4"
+            style={{ borderTopColor: getStateColor(vendor.state) }}
+            onClick={() => handleViewDetails(vendor)}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-bold text-center truncate">{vendor.name}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p>Email: {vendor.email}</p>
-              <p>Phone: {vendor.phone_number}</p>
-              <p>Shop Type: {vendor.shop_type}</p>
-              <p>City: {vendor.city}</p>
-              <p>Ratings: {vendor.ratings}</p>
-              <div className="flex space-x-2 mt-4">
-                <Button onClick={() => handleEdit(vendor)} size="sm">
-                  Edit
-                </Button>
+            <CardContent className="pb-4">
+              <div className="flex items-center justify-center mb-2">
+                {renderRatingStars(vendor.ratings)}
+                <span className="ml-2 text-sm text-gray-600">{vendor.ratings}</span>
+              </div>
+              <p className="text-center text-gray-600 text-sm truncate">{vendor.shop_type}</p>
+              <p className="text-center text-sm text-gray-500 mt-1">{vendor.city}, {vendor.state}</p>
+              
+              <div className="flex justify-end mt-4">
                 <Button
-                  onClick={() => handleDelete(vendor.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(vendor.id);
+                  }}
                   variant="destructive"
                   size="sm"
+                  className="h-8 px-3"
                 >
                   Delete
                 </Button>
@@ -242,6 +167,49 @@ const ShopsPage = () => {
           </Card>
         ))}
       </div>
+      
+      <Dialog open={selectedVendor !== null} onOpenChange={(open) => !open && setSelectedVendor(null)}>
+        {selectedVendor && (
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <h2 className="text-2xl font-bold">{selectedVendor.name}</h2>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="flex items-center justify-center mb-4">
+                {renderRatingStars(selectedVendor.ratings)}
+                <span className="ml-2 text-sm text-gray-600">{selectedVendor.ratings}</span>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Shop Type:</span>
+                  <span>{selectedVendor.shop_type}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Email:</span>
+                  <span className="text-blue-600">{selectedVendor.email}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Phone:</span>
+                  <span>{selectedVendor.phone_number}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">GST Number:</span>
+                  <span>{selectedVendor.gst_number}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="font-medium">Address:</span>
+                  <span>{selectedVendor.address}</span>
+                </div>
+                <div className="flex justify-between pb-2">
+                  <span className="font-medium">Location:</span>
+                  <span>{selectedVendor.city}, {selectedVendor.state}</span>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 };
