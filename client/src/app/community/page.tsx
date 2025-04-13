@@ -260,7 +260,7 @@ export default function CommunityPage() {
         </div>
         </motion.div> */}
 
-<div className="min-h-screen pt-20" style={{ backgroundColor: currentTheme.primary }}>
+<div className="min-h-screen " style={{ backgroundColor: currentTheme.primary }}>
  
 
   <motion.div 

@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 // Define TypeScript interface for Homestay
 interface Homestay {
@@ -135,6 +136,7 @@ const HomestaysPage = () => {
     return icons;
   };
 
+  const images = ["/homestay1.jpg","/homestay2.jpg"]
   // Filter homestays by location
   const filteredHomestays = locationFilter === "all" 
     ? homestays 
@@ -165,18 +167,19 @@ const HomestaysPage = () => {
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredHomestays.map((homestay) => (
+        {filteredHomestays.map((homestay,index) => (
           <Card 
             key={homestay.id} 
             className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer"
             onClick={() => setSelectedHomestay(homestay)}
           >
             <div className="h-40 bg-gray-200 relative">
-              <img 
-                src={getLocationImage(homestay.place)} 
-                alt={homestay.place}
-                className="w-full h-full object-cover"
-              />
+            <Image 
+            src={images[index]} 
+            alt={homestay.place}
+            fill
+            className="object-cover"
+          />
               <div className="absolute top-0 right-0 p-2">
                 <Badge 
                   className="font-semibold" 

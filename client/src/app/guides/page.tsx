@@ -348,7 +348,7 @@ useEffect(() => {
   };
   
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-4">
       <motion.div 
     className="py-12 text-center"
     initial={{ opacity: 0 }}
