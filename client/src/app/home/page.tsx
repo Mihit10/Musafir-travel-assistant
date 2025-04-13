@@ -137,7 +137,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen">
-      <div
+      {/* <div
         style={{ backgroundColor: "#1a1a1a", color: "white" }}
         className="p-2"
       >
@@ -158,7 +158,7 @@ const Page = () => {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <Header
         totalDays={totalDays}

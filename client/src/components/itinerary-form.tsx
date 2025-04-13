@@ -31,7 +31,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
-const SITE_NAME = "raste pe";
+const SITE_NAME = "Musafir";
 const CITIES = ["Goa", "Kerala", "Himachal", "Uttarakhand", "Rajasthan"];
 export const PREFERENCES = [
   "Historic",

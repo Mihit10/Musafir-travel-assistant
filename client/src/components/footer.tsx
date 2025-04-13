@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, ArrowUpCircle } from 'lucide-react';
 
 // Brand name and year constants to use throughout the component
-const BRAND_NAME = "Raste-pe";
+const BRAND_NAME = "Musafir";
 const CURRENT_YEAR = new Date().getFullYear();
 
 const Footer = () => {

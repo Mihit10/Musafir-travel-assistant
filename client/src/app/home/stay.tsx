@@ -6,47 +6,53 @@ const StayOptions = () => {
   const [accommodations] = useState([
     {
       id: 1,
-      name: "Seaside Luxury Hotel",
+      name: "The Oberoi Amarvilas, Agra",
       type: "Hotel",
-      rating: 4.8,
-      price: "$180/night",
-      features: ["Swimming pool", "Restaurant", "Spa"],
+      rating: 4.7,
+      price: "₹27,723",
+      features: [
+        "Free breakfast",
+        "Free Wi-Fi",
+        "Pools",
+        "Hot tub",
+        "Child-friendly"
+    ],
       ecoFriendly: false,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/luxury.jpg"
     },
     {
       id: 2,
-      name: "Mountain View Cabin",
+      name: "The Hosteller Agra",
       type: "Eco Resort",
       rating: 4.6,
-      price: "$120/night",
-      features: ["Sustainable", "Organic food", "Nature trails"],
+      price: "₹795",
+      features: ["Sustainable", "Organic food", "Nature trails",  "Pet-friendly"],
       ecoFriendly: true,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/cabin.jpg"
     },
     {
       id: 3,
-      name: "Village Family Homestay",
+      name: "Khas Mahal Home Stay",
       type: "Homestay",
-      rating: 4.9,
-      price: "$75/night",
+      rating: 4.1,
+      price: "₹795",
       features: ["Home cooked meals", "Cultural experience", "Local guides"],
       ecoFriendly: false,
       localHomestay: true,
-      image: "/api/placeholder/300/200"
+      image: "/homestay.jpg"
     },
     {
       id: 4,
-      name: "Urban Boutique Hotel",
+      name: "Joey's Hostel Agra",
       type: "Hotel",
       rating: 4.5,
-      price: "$145/night",
+      price: "₹861",
       features: ["Central location", "Modern design", "Rooftop bar"],
       ecoFriendly: false,
       localHomestay: false,
-      image: "/api/placeholder/300/200"
+      image: "/boutique.jpg"
     }
   ]);
 
