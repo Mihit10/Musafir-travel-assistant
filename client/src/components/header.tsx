@@ -36,7 +36,7 @@ const Header = () => {
     { name: 'Your Itinerary', path: '/home' },
     { name: 'Local Homestays', path: '/homestays' },
     { name: 'Local Guides', path: '/guides' },
-    { name: 'Local Vendors', path: '/vendors' },
+    { name: 'Local Vendors', path: '/shops' },
     { name: 'Community', path: '/community' },
   ];
 

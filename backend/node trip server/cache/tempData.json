@@ -1,153 +1,99 @@
 {
   "day_1": {
     "place_1": {
+      "name": "The Ridge",
       "coordinates": {
-        "latitude": 32.3792,
-        "longitude": 77.2453
+        "latitude": 31.1048,
+        "longitude": 77.1722
       },
-      "name": "Rohtang Pass",
-      "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports.",
-      "travel_time_to_next": 29
+      "travel_time_to_next": 2,
+      "description": "A spacious open street in the heart of Shimla, offering panoramic views of the surrounding mountains and colonial-era buildings."
+    },
+    "place_2": {
+      "name": "Dalai Lama Temple Complex",
+      "coordinates": {
+        "latitude": 32.2333,
+        "longitude": 77.1833
+      },
+      "travel_time_to_next": 2,
+      "description": "A spiritual center and residence of the Dalai Lama, featuring a peaceful ambiance and Tibetan architecture."
+    },
+    "place_3": {
+      "name": "Jakhoo Temple",
+      "coordinates": {
+        "latitude": 31.1042,
+        "longitude": 77.1734
+      },
+      "travel_time_to_next": 300,
+      "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla."
+    },
+
+    "place_4": {
+      "name": "Jakhoo Hill",
+      "coordinates": {
+        "latitude": 31.1048,
+        "longitude": 77.1722
+      },
+      "travel_time_to_next": 0,
+      "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla."
     }
   },
   "day_2": {
     "place_1": {
+      "name": "Bijli Mahadev Temple",
       "coordinates": {
-        "latitude": 31.1033,
-        "longitude": 77.1733
+        "latitude": 31.7417,
+        "longitude": 77.4519
       },
-      "name": "Jakhoo Hill",
-      "description": "The highest point in Shimla, offering a panoramic view of the city and home to the ancient Jakhoo Temple.",
-      "travel_time_to_next": 146
+      "travel_time_to_next": 90,
+      "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley."
+    },
+    "place_2": {
+      "name": "Hadimba Devi Temple",
+      "coordinates": {
+        "latitude": 32.2333,
+        "longitude": 77.1833
+      },
+      "travel_time_to_next": 45,
+      "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture."
+    },
+    "place_3": {
+      "name": "Vashisht Baths",
+      "coordinates": {
+        "latitude": 32.2414,
+        "longitude": 77.1842
+      },
+      "travel_time_to_next": 0,
+      "description": "Natural hot springs with separate bathing areas for men and women, believed to have healing properties."
     }
   },
   "day_3": {
     "place_1": {
-      "coordinates": {
-        "latitude": 32.0958,
-        "longitude": 76.2631
-      },
-      "name": "Kangra Fort",
-      "description": "One of the oldest forts in India, offering panoramic views of the surrounding valley.",
-      "travel_time_to_next": 31
-    },
-    "place_2": {
-      "coordinates": {
-        "latitude": 32.2389,
-        "longitude": 77.1872
-      },
-      "name": "Hadimba Devi Temple",
-      "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture.",
-      "travel_time_to_next": 0
-    },
-    "place_3": {
-      "coordinates": {
-        "latitude": 32.3186,
-        "longitude": 77.1584
-      },
       "name": "Solang Valley",
-      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks.",
-      "travel_time_to_next": 45
-    }
-  },
-  "day_4": {
-    "place_1": {
       "coordinates": {
-        "latitude": 32.2389,
-        "longitude": 77.1872
+        "latitude": 32.2861,
+        "longitude": 77.2042
       },
-      "name": "Hadimba Devi Temple",
-      "description": "An ancient cave temple dedicated to Hidimba Devi, surrounded by cedar forests and known for its unique pagoda-style architecture.",
-      "travel_time_to_next": 2
+      "travel_time_to_next": 60,
+      "description": "A picturesque valley offering adventure sports like paragliding, zorbing, and skiing, surrounded by snow-capped peaks."
     },
     "place_2": {
+      "name": "Rohtang Pass",
       "coordinates": {
-        "latitude": 32.2492,
-        "longitude": 77.1929
+        "latitude": 32.3638,
+        "longitude": 77.2459
       },
-      "name": "Vashisht Baths",
-      "description": "Natural hot springs with separate bathing areas for men and women, believed to have healing properties.",
-      "travel_time_to_next": 24
+      "travel_time_to_next": 180,
+      "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports."
     },
     "place_3": {
-      "coordinates": {
-        "latitude": 32.2739,
-        "longitude": 77.2021
-      },
-      "name": "Bijli Mahadev Temple",
-      "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley.",
-      "travel_time_to_next": 0
-    }
-  },
-  "day_5": {
-    "place_1": {
-      "coordinates": {
-        "latitude": 32.2739,
-        "longitude": 77.2021
-      },
-      "name": "Bijli Mahadev Temple",
-      "description": "A sacred temple dedicated to Lord Shiva, known for its tall staff that attracts lightning, offering panoramic views of the Kullu Valley.",
-      "travel_time_to_next": 127
-    },
-    "place_2": {
-      "coordinates": {
-        "latitude": 32.5439,
-        "longitude": 76.0472
-      },
-      "name": "Khajjiar Lake",
-      "description": "Often referred to as 'Mini Switzerland of India', this lake is surrounded by meadows and forests.",
-      "travel_time_to_next": 43
-    }
-  },
-  "day_6": {
-    "place_1": {
-      "coordinates": {
-        "latitude": 32.3792,
-        "longitude": 77.2453
-      },
-      "name": "Rohtang Pass",
-      "description": "A high mountain pass on the eastern Pir Panjal Range of the Himalayas, known for its scenic beauty and adventure sports.",
-      "travel_time_to_next": 29
-    },
-    "place_2": {
-      "coordinates": {
-        "latitude": 31.7442,
-        "longitude": 77.4542
-      },
       "name": "Great Himalayan National Park",
-      "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities.",
-      "travel_time_to_next": 0
-    }
-  },
-  "day_7": {
-    "place_1": {
       "coordinates": {
-        "latitude": 31.7442,
-        "longitude": 77.4542
+        "latitude": 31.6333,
+        "longitude": 77.3667
       },
-      "name": "Great Himalayan National Park",
-      "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities.",
-      "travel_time_to_next": 0
-    }
-  },
-  "day_8": {
-    "place_1": {
-      "coordinates": {
-        "latitude": 32.2431,
-        "longitude": 77.1872
-      },
-      "name": "New Scenic Spot",
-      "description": "A beautiful new spot added to the itinerary.",
-      "travel_time_to_next": 45
-    },
-    "place_2": {
-      "coordinates": {
-        "latitude": 32.2431,
-        "longitude": 77.1872
-      },
-      "name": "New Scenic Spot",
-      "description": "A beautiful new spot added to the itinerary.",
-      "travel_time_to_next": 45
+      "travel_time_to_next": 0,
+      "description": "A UNESCO World Heritage Site, home to diverse flora and fauna, offering trekking and wildlife viewing opportunities."
     }
   }
 }

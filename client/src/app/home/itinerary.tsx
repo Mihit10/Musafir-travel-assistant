@@ -131,7 +131,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
             key={place.id}
             className="bg-primary rounded-lg p-4 flex items-center justify-between cursor-pointer hover:shadow-md transition-all duration-300 transform hover:scale-102 hover:bg-yellow-100"
           >
-            <Link href={`/place/${place.id}`}>
+            <Link href={`/place/${encodeURIComponent(place.name)}`}>
               <div>
                 <h3 className="font-semibold text-secondary text-lg">
                   {place.name}
