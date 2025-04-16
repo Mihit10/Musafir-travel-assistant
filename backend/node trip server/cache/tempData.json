@@ -27,15 +27,14 @@
       "travel_time_to_next": 300,
       "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla."
     },
-
     "place_4": {
-      "name": "Jakhoo Hill",
       "coordinates": {
-        "latitude": 31.1048,
-        "longitude": 77.1722
+        "latitude": 31.1044,
+        "longitude": 77.1734
       },
-      "travel_time_to_next": 0,
-      "description": "An ancient temple dedicated to Lord Hanuman, situated on Jakhoo Hill, the highest point in Shimla."
+      "name": "Christ Church",
+      "description": "The second oldest church in North India, known for its neo-Gothic architecture and stained glass windows.",
+      "travel_time_to_next": 45
     }
   },
   "day_2": {
